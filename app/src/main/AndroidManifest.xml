@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.odm.setupwizardoverlay">
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PRECISE_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.PERFORM_CDMA_PROVISIONING" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS_PRIVILEGED" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.CHANGE_COMPONENT_ENABLED_STATE" />
+    <uses-permission android:name="android.permission.REBOOT" />
+    <uses-permission android:name="android.permission.SHUTDOWN" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+
+    <uses-permission android:name="com.vcast.mediamanager.CLOUD_PERMISSION"/>
+    <uses-permission android:name="com.verizon.mips.services.RECEIVE_SUW_CARRIER_SCREENS_UPDATE"/>
+    <uses-permission android:name="com.verizon.mips.services.FILE_ACCESS"/>
+
+    <uses-permission android:name="com.qualcomm.qti.permission.REMOTE_SIMLOCK" />
+    <uses-permission android:name="com.qualcomm.qti.permission.REMOTE_SIMLOCK_AUTH" />
+
+
+    <application
+        android:name=".SetupWizardApplication"
+        android:persistent="true"
+        android:allowClearUserData="false"
+        android:directBootAware="true"
+        android:defaultToDeviceProtectedStorage="false"
+        android:supportsRtl="true"
+        android:icon="@drawable/ic_vzw_device_setup"
+        android:label="@string/setup"
+        android:theme="@style/SetupWizardAppTheme"
+        tools:replace="android:appComponentFactory"
+        android:appComponentFactory="android.support.v4.app.CoreComponentFactory">
+
+        <!--<uses-library android:name="remotesimlockmanagerlibrary" />
+        <uses-library android:name="uimremotesimlocklibrary" />-->
+        <uses-library android:name="com.qualcomm.qti.remoteSimlock.uimremotesimlocklibrary" android:required="false"/>
+        <uses-library android:name="com.qualcomm.qti.remoteSimlock.manager.remotesimlockmanagerlibrary" android:required="false"/>
+
+       <activity android:name=".SummaryActivity"
+                android:excludeFromRecents="true" >
+            <intent-filter android:priority="1">
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="com.odm.setupwizardoverlay.SUMMARY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <receiver android:name=".PartnerReceiver">
+            <intent-filter>
+                <action android:name="com.android.setupwizard.action.PARTNER_CUSTOMIZATION" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".VzwSimCheckActivity"
+            android:configChanges="keyboardHidden|locale|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:process="com.android.phone"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" >
+            <intent-filter>
+                <action android:name="com.odm.setupwizardoverlay.VZW_SIM_CHECK" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ShowSimStatusActivity"
+            android:configChanges="keyboardHidden|mcc|mnc|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.odm.setupwizardoverlay.VZW_SIM_STATUS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".VzwNoDataActivity"
+            android:configChanges="keyboardHidden|mcc|mnc|orientation|screenSize"
+            android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="com.odm.setupwizardoverlay.WIFI_NO_DATA" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- is this necessary? -->
+        <activity
+            android:name=".SkipGoogleActivationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay" >
+            <intent-filter android:priority="9">
+                <action android:name="com.android.phone.PERFORM_VOICELESS_CDMA_PROVISIONING" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".VzwPlanSelection"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="com.odm.setupwizardoverlay.VZW_PLAN_SELECTION" />
+                <action android:name="com.odm.setupwizardoverlay.VZW_PLAN_SELECTION_FROM_SETUP" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".VzwDataPlan"
+            android:configChanges="keyboardHidden|mcc|mnc|orientation|screenSize"
+            android:theme="@style/SetupWizardAppTheme" />
+
+        <activity android:name=".VzwCloudSetupActivity"
+                  android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.odm.setupwizardoverlay.CLOUD" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".VzwServicesPrivacyActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@style/SetupWizardAppThemeCompat">
+            <intent-filter>
+                <action android:name="com.odm.setupwizardoverlay.SERVICES_PRIVACY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ShowWifiWarnActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.odm.setupwizardoverlay.WIFI_WARN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
+

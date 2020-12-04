@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4.0dip"
+    android:paddingLeft="40.0dip"
+    android:paddingTop="48.0dip">
+
+    <ImageButton
+        android:id="@+id/title_icon"
+        android:layout_width="32.0dip"
+        android:layout_height="32.0dip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="24.0dip"
+        android:background="@drawable/ic_check_blue_32px" />
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="26.0dip"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="18.0dip"
+        android:layout_marginLeft="5.0dip"
+        android:layout_toRightOf="@id/title_icon"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/device_setup"
+        android:textColor="@android:color/white"
+        android:textSize="18.0sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/page_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/title_icon"
+        android:fontFamily="roboto-regular"
+        android:text="@string/summary_title"
+        android:textColor="@color/title_text_color"
+        android:textSize="24.0sp"
+        android:textStyle="normal" />
+</RelativeLayout>

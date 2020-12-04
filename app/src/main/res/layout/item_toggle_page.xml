@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="3dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="@dimen/suw_text_horizontal_padding"
+    android:paddingRight="@dimen/suw_text_horizontal_padding">
+
+    <TextView
+        android:id="@+id/tv_toggle_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:fontFamily="roboto-regular"
+        android:layout_toLeftOf="@id/switch_container"/>
+
+    <LinearLayout
+        android:id="@+id/switch_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true">
+        <View
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_height="?android:actionBarSize"/>
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/switch_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

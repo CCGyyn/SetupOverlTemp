@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SetupWizardAppTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
+        // set navigation bar color and light mode
+        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        // set status bar color and light mode
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorAccent">@color/sud_color_accent_light</item>
+    </style>
+
+    <style name="SetupWizardAppThemeCompat" parent="Theme.AppCompat.Light.NoActionBar">
+        // set navigation bar color and light mode
+        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        // set status bar color and light mode
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorAccent">@color/sud_color_accent_light</item>
+    </style>
+
+    <style name="SetupWizardButtonStyleColored" parent="@android:style/Widget.Material.Button.Colored">
+        <item name="android:textColor">@color/link_color</item>
+        <item name="android:backgroundTint">@color/suw_color_accent_glif_dark</item>
+    </style>
+
+    <style name="SetupWizard.Switch" parent="@android:style/Widget.Material.Light.CompoundButton.Switch">
+        <item name="android:thumb">@drawable/suw_switch_thumb_material</item>
+        <item name="showText">false</item>
+        <item name="switchPadding">@dimen/suw_switch_padding</item>
+        <item name="switchTextAppearance">@style/TextAppearance.AppCompat.Widget.Switch</item>
+        <item name="track">@drawable/abc_switch_track_mtrl_alpha</item>
+        <!-- Active thumb color & Active track color(30% transparency) switch 打开时的拇指按钮的颜色 轨迹颜色默认为30%这个颜色 -->
+        <item name="colorControlActivated">@color/suw_switch_thumb_on_color</item>
+        <!-- Inactive thumb color switch关闭时的拇指按钮的颜色 -->
+        <item name="colorSwitchThumbNormal">@color/suw_switch_thumb_off_color</item>
+        <!-- Inactive track color(30% transparency) switch关闭时的轨迹的颜色 30%这个颜色 -->
+        <item name="android:colorForeground">@color/suw_switch_track_off_color</item>
+    </style>
+
+</resources>

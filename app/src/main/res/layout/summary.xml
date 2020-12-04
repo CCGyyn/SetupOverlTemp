@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/settings_title_bar"
+        layout="@layout/oob_title_bar" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24.0dip"
+        android:layout_marginRight="24.0dip"
+        android:fadeScrollbars="false">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/devicesetup_part1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8.0dip"
+                android:layout_marginTop="24.0dip"
+                android:fontFamily="roboto-regular"
+                android:text="@string/device_setup_body_1"
+                android:textColor="@color/title_text_color"
+                android:textSize="14.0sp" />
+
+            <TextView
+                android:id="@+id/devicesetup_part2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8.0dip"
+                android:layout_marginTop="24.0dip"
+                android:fontFamily="roboto-regular"
+                android:text="@string/device_setup_body_2"
+                android:textColor="@color/title_text_color"
+                android:textSize="14.0sp" />
+
+            <TextView
+                android:id="@+id/devicesetup_part3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8.0dip"
+                android:layout_marginTop="24.0dip"
+                android:fontFamily="roboto-regular"
+                android:text="@string/device_setup_body_3"
+                android:textColor="@color/title_text_color"
+                android:textSize="14.0sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:drawSelectorOnTop="false"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="24.0dip"
+        android:paddingRight="24.0dip"
+        android:scrollbarStyle="insideInset" />
+
+   <fragment
+        android:id="@+id/navigation_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="com.odm.setupwizardoverlay.NavigationBar"
+        style="@style/setup_wizard_navbar_style"/>
+</LinearLayout>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/settings_title_bar"
+        layout="@layout/header_layout" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip"
+        android:layout_marginLeft="40.0dip"
+        android:layout_marginRight="40.0dip"
+        android:layout_weight="1.0"
+        android:fadeScrollbars="false">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24.0dip"
+            android:orientation="vertical"
+            android:paddingBottom="24.0dip">
+
+            <TextView
+                android:id="@+id/text_message"
+                style="@android:style/TextAppearance.Material.Subhead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12.0dip"
+                android:text="@string/wifi_loc_text_1" />
+
+            <LinearLayout
+                android:id="@+id/wifi_loc_msg_container"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@android:style/TextAppearance.Material.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12.0dip"
+                    android:text="@string/wifi_loc_text_2"
+                    android:textColor="@color/emergency_text_color" />
+
+                <TextView
+                    style="@android:style/TextAppearance.Material.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1.0dip"
+                    android:text="@string/loc_info_title"
+                    android:visibility="gone"/>
+
+                <TextView
+                    style="@android:style/TextAppearance.Material.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loc_text_vzw"
+                    android:visibility="gone"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <include layout="@layout/emergency_btn_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+
+        <fragment
+            android:id="@+id/navigation_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:name="com.odm.setupwizardoverlay.NavigationBar"
+            style="@style/setup_wizard_navbar_style"/>
+
+    </LinearLayout>
+
+</LinearLayout>

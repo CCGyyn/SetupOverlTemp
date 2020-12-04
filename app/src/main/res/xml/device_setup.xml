@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="device_setup"
+    android:summary="@string/device_setup_summary"
+    android:title="@string/device_setup">
+    <CheckBoxPreference
+        android:key="my_verizon"
+        android:summary="@string/ask_verizon"
+        android:title="@string/verizon_title"
+        android:widgetLayout="@layout/preference_checkbox">
+        <intent
+            android:action="com.vzw.hss.myverizon.LAUNCH_MYVERIZON"
+            android:launchMode="singleTop" />
+    </CheckBoxPreference>
+
+
+   <!-- <CheckBoxPreference
+        android:key="vzw_cloud"
+        android:summary="@string/vzw_cloud_summary"
+        android:title="@string/vzw_cloud"
+        android:widgetLayout="@layout/preference_checkbox">
+        <intent
+            android:action="com.vcast.mediamanager.ACTION_SETTINGS"
+            android:launchMode="singleTop" />
+    </CheckBoxPreference>-->
+</PreferenceScreen>

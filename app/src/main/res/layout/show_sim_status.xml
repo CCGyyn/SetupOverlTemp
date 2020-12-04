@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_layout" />
+
+    <LinearLayout
+        android:id="@+id/sim_status_body"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="24.0dip"
+        android:layout_marginRight="24.0dip"
+        android:layout_marginTop="14.0dip"
+        android:layout_weight="1.0"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/welcome_sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="roboto-regular"
+            android:gravity="center_vertical"
+            android:text="@string/sim_is_active"
+            android:textColor="@color/text_color"
+            android:textSize="16.0sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/sim_status_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8.0dip"
+            android:fontFamily="roboto-medium"
+            android:gravity="left"
+            android:textColor="@color/text_color"
+            android:textSize="21.0sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/emergency_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8.0dip"
+            android:fontFamily="roboto-regular"
+            android:text="@string/emergency_text"
+            android:textColor="@color/emergency_text_color"
+            android:textSize="16.0sp"
+            android:visibility="gone" />
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:fadeScrollbars="false">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/location_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="roboto-regular"
+                    android:paddingRight="5.0dip"
+                    android:text="@string/loc_text_vzw"
+                    android:textColor="@color/text_color"
+                    android:textSize="16.0sp" />
+
+                <ProgressBar
+                    android:id="@+id/act_progress_indicator"
+                    style="@android:style/Widget.Material.ProgressBar.Horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12.0dip"
+                    android:indeterminateOnly="true"
+                    android:visibility="gone" />
+
+                <include layout="@layout/no_sim" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <include
+                layout="@layout/emergency_btn_layout"
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center_horizontal" />
+
+            <Button
+                android:id="@+id/power_button"
+                style="@android:style/Widget.Material.Light.Button.Borderless"
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:fontFamily="roboto-regular"
+                android:gravity="center"
+                android:onClick="onclickPowerOff"
+                android:text="@string/restart_phone"
+                android:textColor="@color/holo_blue"
+                android:textSize="16.0sp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <fragment
+            android:id="@+id/navigation_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:name="com.odm.setupwizardoverlay.NavigationBar"
+            style="@style/setup_wizard_navbar_style"/>
+
+    </LinearLayout>
+
+</LinearLayout>

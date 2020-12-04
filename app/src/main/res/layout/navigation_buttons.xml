@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="100.0dip">
+
+    <Button
+        android:id="@+id/back_button"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="24.0dip"
+        android:fontFamily="roboto-regular"
+        android:backgroundTint="@color/suw_color_accent_glif_dark"
+        android:textAllCaps="false"
+        android:gravity="center"
+        android:textColor="@color/link_color"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/next_button"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="24.0dip"
+        android:backgroundTint="@color/suw_color_accent_glif_dark"
+        android:textAllCaps="false"
+        android:fontFamily="roboto-regular"
+        android:gravity="center"
+        android:textColor="@color/link_color" />
+</RelativeLayout>
