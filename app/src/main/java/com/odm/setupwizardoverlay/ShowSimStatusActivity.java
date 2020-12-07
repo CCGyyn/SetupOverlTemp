@@ -361,8 +361,7 @@ public class ShowSimStatusActivity extends Activity implements NavigationBar.Nav
     }
 
     public void onclickEmergencyCall(View view) {
-        Intent intent = new Intent("com.android.phone.EmergencyDialer.DIAL");
-        startActivity(intent);
+        Utils.onclickEmergencyCall(getApplicationContext());
     }
 
     private static final int DELAY_TIMER_MILLIS = 6000;

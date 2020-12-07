@@ -40,7 +40,6 @@ public class VzwNoDataActivity extends Activity implements NavigationBar.Navigat
     }
 
     public void onclickEmergencyCall(View view) {
-        Intent intent = new Intent("com.android.phone.EmergencyDialer.DIAL");
-        startActivity(intent);
+        Utils.onclickEmergencyCall(getApplicationContext());
     }
 }

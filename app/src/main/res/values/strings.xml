@@ -235,5 +235,94 @@ To set up your phone using Wi-Fi only, tap Doni't Activate."</string>
     </string>
     <string name="use_mobile_text">Use Mobile</string>
     <string name="back_to_wifi_text">Back to Wi-Fi</string>
+    <!-- poa -->
+    <string name="poa_username">EAS_REL</string>
+    <string name="poa_client_name">EAS_OEM</string>
+    <string name="poa_passwd">Yk03pHeK</string>
+    <!--  for test -->
+    <string name="poa_username_for_test">VZW_REL</string>
+    <string name="poa_passwd_for_test">VZW_REL123</string>
+    <string name="po_lookup_url_for_test">https://poa-iot.vzw.com/vzw-eas-ws/EASSelfActivation/LookupOrder</string>
+    <string name="po_validate_url_for_test">https://poa-iot.vzw.com/vzw-eas-ws/EASSelfActivation/ValidateCustomer</string>
+    <string name="po_release_url_for_test">https://poa-iot.vzw.com/vzw-eas-ws/EASSelfActivation/ReleaseOrder</string>
+
+    <string name="phone_activation">Phone activation</string>
+    <string name="wait_while_activating">Activating now. This may take up to 5 min..</string>
+    <string name="ready_to_go">Your phone is set up and ready to use.
+          Remember, you can change your selections at any time in Settings.</string>
+    <string name="label_back">Back</string>
+    <string name="label_next">Next</string>
+    <string name="label_set">Set</string>
+    <string name="label_skip">Skip</string>
+    <string name="label_view">View</string>
+    <string name="label_got_it">Got it!</string>
+    <string name="label_select">Select</string>
+    <string name="label_connect">Connect</string>
+
+    <string name="skip_activation_ui_warn">you skip the activation ui,so you can see this.if you want to continue active you phone,press back to retry! or press \'Next\' to continue!</string>
+    <string name="sim_not_ready_warn">sim is not ready,if you want to continue active you phone,press back to retry!</string>
+    <string name="phone_not_activated_warn">Failed to activate your phone,if you want to continue activate you phone,press back to retry! or press \'Next\' to continue!</string>
+    <string name="activate_via_call">To activate your phone, call (800) 922-0204 from another phone.</string>
+    <string name="activate_timeout_warn">Sorry, were having trouble activating your phone. Please call (800) 922-0204 from another phone to activate your 4G LTE service and then try again by restarting your phone.
+        You’ll need your account information.</string>
+    <string name="reboot_to_complete">"Now , you need to restart your phone to complete activation. please press "Reboot" key!</string>
+    <string name="phone_number_unknown">Unknown</string>
+    <string name="sim_note">Note : you will not be able to make  or receive phone calls, including emergency calls, after this screen until you finish the Setup Wizard.\n</string>
+
+    <string name="ssn_another_way"><u>Or tap here to use the last 4 digits of the Account Owner\'s SSN instead.</u></string>
+    <string name="what_is_pin">What is an account PIN?\nit\'s a password created by the Account Owner for account access.NOTE: it\'s different from your My Verizon password</string>
+    <string name="po_authentication_verifying">Verifying Your Account</string>
+
+    <string name="verizon_cloud_title">Verizon Cloud</string>
+    <string name="cloud_use_info">Keep your contacts safely backed up with Verizon Cloud.
+        \n\nContacts previously saved in Verizon Cloud or Backup Assistant will be synced to this phone.
+        \n\nBy selecting Next, you agree to the Terms &amp; Conditions.</string>
+    <string name="ready_to_activate">Ready to activate</string>
+    <string name="activate_cancel">Cancel</string>
+    <string name="activation_last_minutes">Please note the activation will take a few minutes.</string>
+    <string name="getting_phone_number">Getting Phone Number</string>
+    <string name="wait_for_get_number">Your activation has begun. Please wait while we get your phone ready to set up</string>
+    <string name="deactivate_old_phone">Deactivating Your Old Phone</string>
+    <string name="turn_off_for_deactivate">We need to deactivate your old phone before we can activate your new phone.
+        \n\nRemember to turn off your old phone and leave it off until activation is complete</string>
+    <string name="activating_title">Activating your phone</string>
+    <string name="activating_message">Don\'t turn it off.</string>
+    <string name="poa_upgrade_order_not_found">Sorry, we\'re having trouble activating your phone.  Please call (877) 807-4646 from another phone to activate your 4G LTE service and then try again. You\'ll need your account information.</string>
+    <string name="poa_entry_not_match_records">This entry does not match our records. Please try again.</string>
+    <string name="sorry_not_activate">Sorry, Can\'t Activate. To activate your phone, call (800) 922-0204 from any phone other than your new phone.</string>
+    <string name="po_prepare_to_activate">Preparing to Activate Your Phone</string>
+    <string name="po_setup_email_cloud">Once your phone is activated, we\'ll walk you through setting up your email and Verizon Cloud Buttons</string>
+
+    <string name="account_restricted">To activate your phone, follow the instructions included with your new phone. Or contact the Verizon Wireless administrator at your organization and provide the following information: <Data><![CDATA[ <br/><br/>
+    Device ID: <br/> <pre><font size="15" color="#4285f4"><b>\t%1$s</b></font></pre> <br/>
+    SIM ID: <br/> <pre><font size="15" color="#4285f4"><b>\t%2$s</b></font></pre>]]></Data></string>
+
+    <string name="lookup_order_timeout">Sorry, we\'re having trouble activating your phone. Make sure you have a good signal (multiple bars). If you are indoors, try moving closer to a window or going outside. Once your signal is good, you can try activating again by turning this phone off, then on again. If this problem persists, please contact Customer Service at (800) 922-0204 for assistance.</string>
+
+    <string name="validate_customer_timeout">Sorry, we\'re having trouble activating your phone.
+        \n\nMake sure you have a good signal (multiple bars). If you are indoors, try moving closer to a window or going outside.
+        \n\nOnce your signal is good, you can try activating again by turning this phone off, then on again.
+        \n\nIf this problem persists, please contact Customer Service at (800) 922-0204 for assistance.</string>
+
+    <string name="release_order_timeout">Sorry, we\'re having trouble activating your phone. Make sure you have a good signal (multiple bars). If you are indoors, try moving closer to a window or going outside. Once your signal is good, you can try activating again by turning this phone off, then on again. If this problem persists, please contact Customer Service at (800) 922-0204 for assistance.</string>
+
+    <string name="lost_and_stolen_device_or_sim">Sorry, we\'re having trouble activating your phone. Please call (877) 807-4646 from another phone to activate your 4G LTE service and then try again.</string>
+    <string name="pending_provision_error_code_00013">Sorry, we\'re having trouble activating your phone.
+        \n\nIf you\'re moving your phone number from your old phone to this one, make sure your old phone is turned off.
+        \n\nMake sure you have a good signal (multiple bars). If you are indoors, try moving closer to a window or going outside.
+        \n\nOnce your signal is good, you can try activating again by turning this phone off, then on again. If the problem persists, please contact Customer Service at (800) 922-0204 for assistance.</string>
+    <string name="phone_is_now_active">Your new Verizon Wireless phone is now active.  Your phone number is %1$s.
+        \n\nYou will not be able to make or receive phone calls, including emergency calls, while setting up your phone.
+        \n\nYour phone can share its approximate location with apps and services like maps, shopping and weather. Read the privacy policy of any app or service provider youre considering to understand how they collect, use and share your location information before you use them.</string>
+    <string name="transferring_phone_umber">Transferring Phone Number</string>
+    <string name="transferring_from_existing_number">We\'re working on transferring your existing phone number to your new phone.</string>
+    <string name="prepare_activate_your_phone">Before you activate this phone:\n
+                    1. Back up your contacts from your old phone. \n
+                    2. Turn off your old phone.
+        \n\nWhen you tap Activate Now, we will: \n
+                    1. Deactivate your old phone.\n
+                    2. Transfer your old phone number to this phone.\n
+                    3. Activate this phone.\n</string>
+    <string name="turn_off_phone">Turn off phone</string>
 </resources>
 

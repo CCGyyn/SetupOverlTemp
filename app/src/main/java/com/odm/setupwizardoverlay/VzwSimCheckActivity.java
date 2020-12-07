@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,10 +17,15 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.android.setupwizardlib.util.WizardManagerHelper;
 
+import com.odm.setupwizardoverlay.poa.LookUpOrderRequest;
+import com.odm.setupwizardoverlay.poa.PoaConfig;
+import com.odm.setupwizardoverlay.poa.VzwPoaRequest;
+import com.odm.setupwizardoverlay.poa.VzwPoaStatusActivity;
 import com.qualcomm.qti.remoteSimlock.manager.RemoteSimlockManager;
 import com.qualcomm.qti.remoteSimlock.manager.RemoteSimlockManagerCallback;
 import com.android.internal.telephony.TelephonyIntents;
@@ -27,6 +33,13 @@ import com.android.internal.telephony.TelephonyIntents;
 public class VzwSimCheckActivity extends Activity {
     private static final String TAG = VzwSimCheckActivity.class.getSimpleName();
     public static final int MIN_PAGE_WAIT_TIME = 5000;
+
+    public static final String SIM_DESCRIPTION_ABSENT = "absent";
+    public static final String SIM_DESCRIPTION_NOT_READY = "not_ready";
+    public static final String SIM_DESCRIPTION_READY = "ready";
+    public static final String SIM_DESCRIPTION_ERROR = "error";
+    public static final int REQ_RETRY_MAX_TIMES = 5;
+    public static final int MSG_RETRY_LOOKUP_ORDER_REQ = 100;
 
     private Context mContext;
     private TelephonyManager mTpManager;
@@ -59,6 +72,18 @@ public class VzwSimCheckActivity extends Activity {
     private boolean mGetSimlockStatusResponsed = false;
     private Intent mPendingIntent;
 
+    private boolean DEBUG = true;
+
+    private String mSimDescription;
+    private String mImsi;
+    private String mImei;
+    private LookUpOrderTask mLookupOrderTask;
+    private int mReqRetry;
+
+    private String mCorrelationID;
+    private String mRequestID;
+    private int mSecurityQID;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -89,6 +114,8 @@ public class VzwSimCheckActivity extends Activity {
         mContext = this;
         mTpManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         acquireWakeLock();
+
+        mReqRetry = 0;
 
         // register sim lock callback to get unlockStatus
         registerSimLockCallback(getApplicationContext());
@@ -173,6 +200,34 @@ public class VzwSimCheckActivity extends Activity {
                                     sendEmptyMessageDelayed(MSG_TRY_GET_SIM_LOCK_STATUS, 500);
                                 }
                             }
+                            break;
+                        case MSG_RETRY_LOOKUP_ORDER_REQ:
+                            Log.e(TAG, "retry lookup order req what=" + msg.what);
+
+                            if (mPco == 0 || mPco == 5) {
+                                lookUpOrder();
+                            } else {
+                                Log.e(TAG, "error : wrong pco value");
+                            }
+                            break;
+                        case LookUpOrderRequest.MSG_PO_NEW_ORDER:
+                        case LookUpOrderRequest.MSG_PO_UPGRADE_ORDER:
+                            if (DEBUG) {
+                                Log.e(TAG, "handlePendingOrderFound what=" + msg.what);
+                            }
+                            handlePendingOrderFound((LookUpOrderRequest) msg.obj);
+                            break;
+                        case LookUpOrderRequest.MSG_PO_NOT_FOUND:
+                            if (DEBUG) {
+                                Log.e(TAG, "handlePendingOrderNotFound what=" + msg.what);
+                            }
+                            handlePendingOrderNotFound((LookUpOrderRequest) msg.obj);
+                            break;
+                        case LookUpOrderRequest.MSG_PO_TIME_OUT:
+                            if (DEBUG) {
+                                Log.e(TAG, "handlePendingOrderLookupTimeout what=" + msg.what);
+                            }
+                            handlePendingOrderLookupTimeout((LookUpOrderRequest) msg.obj);
                             break;
                     }
                 }
@@ -435,7 +490,6 @@ public class VzwSimCheckActivity extends Activity {
         sendBroadcast(intent);
     }
 
-
     class SimStateChangeReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -461,6 +515,36 @@ public class VzwSimCheckActivity extends Activity {
                     checkSimActivationState();
                     break;
             }
+            int mSimState = mTpManager.getSimState();
+            switch (state) {
+                case "ABSENT":
+                    mSimDescription = SIM_DESCRIPTION_ABSENT;
+                    break;
+                case "NOT_READY":
+                    mSimDescription = SIM_DESCRIPTION_NOT_READY;
+                    break;
+                case "LOADED":
+                    Log.d(TAG, "getSimState " + mSimState);
+                    if (mSimState == TelephonyManager.SIM_STATE_READY) {
+                        mSimDescription = SIM_DESCRIPTION_READY;
+                    }
+                    break;
+                case "READY":
+                case "IMSI":
+                    mSimDescription = SIM_DESCRIPTION_READY;
+                    break;
+                case "CARD_IO_ERROR":
+                case "UNKNOWN":
+                    mSimDescription = SIM_DESCRIPTION_ERROR;
+                    break;
+            }
+
+            /*if (SIM_DESCRIPTION_READY.equalsIgnoreCase(mSimDescription) &&
+                    !mInternalHandler.hasMessages(MSG_ACTIVATION_TIMEOUT)) { // when ready , schedule timeout
+                if (DEBUG) Log.e(TAG, "scheduleNextTimeoutIfNeeded when sim state is ready");
+                mInternalHandler.removeMessages(MSG_RETRY_SCHEDULE_TIMEOUT);
+                scheduleNextTimeoutIfNeeded();
+            }*/
         }
     }
 
@@ -509,9 +593,11 @@ public class VzwSimCheckActivity extends Activity {
                     }
                     break;
                 case Constants.PCO_DATA_3:
-                case Constants.PCO_DATA_5:
                     Log.d(TAG, "start plan selection");
                     mHandler.sendEmptyMessage(Constants.ACTION_SHOW_PLAN_SELECTION);
+                    break;
+                case Constants.PCO_DATA_5:
+                    onActivateWithMBB(mPco);
                     break;
                 case Constants.PCO_DATA_TIME_OUT:
                 case Constants.PCO_DATA_NONE:
@@ -599,6 +685,7 @@ public class VzwSimCheckActivity extends Activity {
         releaseWakeLock();
 
         deregisterSimLockCallback();
+        clearIfNeeded();
     }
 
     private void stopFDRReadThread() {
@@ -616,4 +703,224 @@ public class VzwSimCheckActivity extends Activity {
         finish();
     }
 
+    private void onActivateWithMBB(int pco) {
+        if (DEBUG) Log.e(TAG, "onActivateWithMBB pco=" + pco);
+        if (pco == 5) {
+            mSimLockCallbackHandler.postDelayed(this::startPcoCheck, 100);
+        }
+    }
+
+    public void removeMessages(int what) {
+        mSimLockCallbackHandler.removeMessages(what);
+    }
+
+    private void startPcoCheck() {
+        if (SIM_DESCRIPTION_ABSENT.equals(mSimDescription) ||
+                SIM_DESCRIPTION_ERROR.equals(mSimDescription)) {
+            Log.e(TAG, "error sim state");
+            return; // absent or error
+        }
+
+        mImsi = Utils.getImsi(getApplicationContext());
+        mImei = Utils.getImei(getApplicationContext());
+
+        if (DEBUG) {
+            Log.e(TAG, "startPcoCheck pco=" + mPco);
+        }
+
+        /// if task is running , just return
+        if (mLookupOrderTask != null && mLookupOrderTask.getStatus() == AsyncTask.Status.RUNNING) {
+            return;
+        }
+
+        processPcoValues(getApplicationContext(), mPco);
+    }
+
+    void processPcoValues(Context context, int pco) {
+        if (pco <= Constants.PCO_DATA_NONE) {
+            return; // invalid pco
+        }
+
+        if (PoaConfig.isDebuggable()) {
+            if (pco == Constants.PCO_DATA_0) { // pco 0 for test
+                lookUpOrder();
+            }
+        } else if (pco == Constants.PCO_DATA_5) {  // pco 5 for product
+            lookUpOrder();
+        }
+    }
+
+    void lookUpOrder() {
+        if ((mLookupOrderTask != null) && (mLookupOrderTask.getStatus() != AsyncTask.Status.FINISHED)) {
+            if (DEBUG) {
+                Log.e(TAG, "status=" + mLookupOrderTask.getStatus());
+            }
+
+            mLookupOrderTask.cancel(true);
+            mLookupOrderTask = null;
+        }
+
+        if (DEBUG) {
+            //Toast.makeText(getActivity(), "lookup Order ...", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "lookup Order ...");
+        }
+
+        removeMessages(MSG_RETRY_LOOKUP_ORDER_REQ);
+
+        mLookupOrderTask = new LookUpOrderTask();
+        mLookupOrderTask.execute();
+    }
+
+    private void startActivityPanel(Intent intent) {
+        clearIfNeeded();
+        startActivity(intent);
+    }
+
+    private void handlePendingOrderFound(LookUpOrderRequest request) {
+        int rc = request.getAccountRestricted();
+        Log.d(TAG, "mLookupReq.getAccountRestricted rc  =" + rc);
+        if (rc == 0) { // Restricted Ac
+            Log.e(TAG, "handlePendingOrderFound Restricted Ac");
+            String errorCode = request.getErrorCode();
+            Log.d(TAG, "handlePendingOrderFound: mLookupReq.getErrorCode=" + errorCode + " ,getOrderType=" + request.getOrderType());
+            Intent intent = new Intent(this, VzwPoaStatusActivity.class);
+            intent.putExtra(VzwPoaStatusActivity.POA_STATUS_KEY, VzwPoaStatusActivity.NewActOrderRestricted);
+            intent.putExtra(VzwPoaStatusActivity.POA_ORDER_TYPE_KEY, request.getOrderType());
+            startActivityPanel(intent);
+            return;
+        }
+
+        String errorCode = request.getErrorCode();
+        if (DEBUG) {
+            Log.e(TAG, "handlePendingOrderFound errorCode=" + errorCode);
+        }
+
+        if (VzwPoaRequest.ERR_CODE_00000.equals(errorCode)) {
+            mCorrelationID = request.getCorrelationID();
+            mRequestID = request.getRequestID();
+            mSecurityQID = request.getSecurityQuestionID();
+            Bundle args = new Bundle();
+            args.putString("mCorrelationID", mCorrelationID);
+            args.putString("mRequestID", mRequestID);
+            args.putInt("mSecurityQuestionID", mSecurityQID);
+            args.putInt("mOrderType",request.getOrderType());
+            Log.e(TAG, "mOrderType=" + request.getOrderType());
+            startFragmentPanel(VzwPendingOrderAuthenticationFragment.class.getName(), args);
+            Log.d(TAG, "handlePendingOrderFound mSecurityQID =" + mSecurityQID
+                    + "\n mRequestID=" + mRequestID + "\n mCorrelationID=" + mCorrelationID);
+
+            Log.d(TAG, "Billing Password Exist =" + (mSecurityQID == 1));
+        } else {
+            Log.d(TAG, "order found but error code is " + rc);
+        }
+    }
+
+    private void handlePendingOrderLookupTimeout(LookUpOrderRequest request) {
+        String errorCode = request.getErrorCode();
+        if (DEBUG) {
+            //Toast.makeText(getActivity(), "lookup order timeout errorCode=" + errorCode, Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "lookup order timeout errorCode=" + errorCode);
+            Log.d(TAG, "handlePendingOrderLookupTimeout: mLookupReq.getErrorCode=" + errorCode + " ,getOrderType=" + request.getOrderType());
+        }
+        Bundle args = new Bundle();
+        args.putInt(VzwPoaStatusFragment.POA_STATUS_KEY, VzwPoaStatusFragment.LookupOrderTimeout);
+        args.putInt(VzwPoaStatusFragment.POA_ORDER_TYPE_KEY, request.getOrderType());
+        startFragmentPanel(VzwPoaStatusFragment.class.getName(), args);
+    }
+
+    void handlePendingOrderNotFound(LookUpOrderRequest request) {
+        String errorCode = request.getErrorCode();
+        if (DEBUG) {
+            //Toast.makeText(getActivity(), "no order found errorCode=" + errorCode, Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "handlePendingOrderNotFound: mLookupReq.getErrorCode=" + errorCode + " ,getOrderType=" + request.getOrderType());
+        }
+        Bundle args = new Bundle();
+        args.putInt(VzwPoaStatusFragment.POA_STATUS_KEY, VzwPoaStatusFragment.NewActOrderNotFound);
+        args.putInt(VzwPoaStatusFragment.POA_ORDER_TYPE_KEY, request.getOrderType());
+        startFragmentPanel(VzwPoaStatusFragment.class.getName(), args);
+    }
+
+    private void clearIfNeeded() {
+        //releaseWakeLock();
+
+        if (mLookupOrderTask != null && (mLookupOrderTask.getStatus() != AsyncTask.Status.FINISHED)) {
+            mLookupOrderTask.cancel(true);
+            mLookupOrderTask = null;
+        }
+    }
+
+    class LookUpOrderTask extends AsyncTask<Void, Void, Integer> {
+        LookUpOrderRequest request;
+        LookUpOrderTask() {
+            request = new LookUpOrderRequest();
+        }
+
+        @Override
+        protected Integer doInBackground(Void... args) {
+            if (isCancelled() || request == null) {
+                Log.e(TAG, "doInBackground no need to do work");
+                return null;
+            }
+
+            Log.d(TAG, "LookUpOrderTask doInBackground..");
+            Log.e(TAG, "imsi=" + mImsi + " imei=" + mImei);
+            return request.lookupOrderReq(getApplicationContext(), mImsi, mImei);
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if (isCancelled() || request == null || result == null) { // return when canceled or fragment invalid state
+                Log.d(TAG, "isCancelled=" + isCancelled());
+                return;
+            }
+
+            // retry for failure
+            if (result != LookUpOrderRequest.MSG_PO_TIME_OUT) {
+                if (request.getStatusCode() == null || VzwPoaRequest.STATUS_CODE_FAILURE.equalsIgnoreCase(request.getStatusCode())) {
+                    Log.e(TAG, "request=" + request + " , req retry times=" + mReqRetry + " , statusCode=" + request.getStatusCode());
+                    if (mReqRetry < REQ_RETRY_MAX_TIMES) {
+                        mReqRetry++;
+                        removeMessages(MSG_RETRY_LOOKUP_ORDER_REQ);
+                        mSimLockCallbackHandler.sendEmptyMessageDelayed(MSG_RETRY_LOOKUP_ORDER_REQ, 9000);
+                        return;
+                    }
+                }
+            }
+
+            removeMessages(MSG_RETRY_LOOKUP_ORDER_REQ);
+
+            Log.d(TAG, "LookUpOrderTask onPostExecute result=" + result);
+
+
+            Message msg = mSimLockCallbackHandler.obtainMessage();
+            msg.obj = request;
+
+            switch (result) {
+                case LookUpOrderRequest.MSG_PO_NEW_ORDER:
+                    msg.what = LookUpOrderRequest.MSG_PO_NEW_ORDER;
+                    break;
+                case LookUpOrderRequest.MSG_PO_UPGRADE_ORDER:
+                    msg.what = LookUpOrderRequest.MSG_PO_UPGRADE_ORDER;
+                    break;
+                case LookUpOrderRequest.MSG_PO_NOT_FOUND:
+                    msg.what = LookUpOrderRequest.MSG_PO_NOT_FOUND;
+                    break;
+                case LookUpOrderRequest.MSG_PO_TIME_OUT:
+                    msg.what = LookUpOrderRequest.MSG_PO_TIME_OUT;
+                    break;
+            }
+
+            msg.sendToTarget();
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            if (DEBUG) {
+                Log.e(TAG, this + " onCancelled");
+            }
+            request.onCancelled();
+            request = null;
+        }
+    }
 }

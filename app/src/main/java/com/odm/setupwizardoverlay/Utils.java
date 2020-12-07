@@ -230,5 +230,81 @@ public class Utils {
         return mdn;
     }
 
+    public static String getImsi(Context context) {
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (tm == null) {
+            return null;
+        }
 
+        return tm.getSubscriberId();
+    }
+
+    public static String getImei(Context context) {
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (tm == null) {
+            return null;
+        }
+
+        return tm.getImei();
+    }
+
+    public static void closeQuietly(Closeable stream) {
+        if (stream != null) {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static String loadDataFromAsset(Context context, String fileName) {
+        InputStream is = null;
+        try {
+            is = context.getAssets().open(fileName);
+            byte[] bytes = new byte[is.available()];
+            is.read(bytes);
+            String result = new String(bytes);
+            Log.d(TAG, "loadDataFromAsset result=" + result);
+            return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            closeQuietly(is);
+        }
+        return null;
+    }
+
+    public static String getInputStreamStringResponse(InputStream is, String charsetName) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(is, charsetName));
+        String line = null;
+        StringBuilder sb = new StringBuilder();
+        try {
+            while ((line = br.readLine()) != null) {
+                if (DEBUG) {
+                    Log.d(TAG, "Line:" + line);
+                }
+                sb.append(line);
+            }
+        } finally {
+            Utils.closeQuietly(br);
+        }
+
+        return sb.toString();
+    }
+
+    public static String getInputStreamStringResponse(InputStream is) throws IOException {
+        return getInputStreamStringResponse(is, "UTF-8");
+    }
+
+    public static void onclickEmergencyCall(Context context) {
+        Intent intent = new Intent("com.android.phone.EmergencyDialer.DIAL");
+        context.startActivity(intent);
+    }
+
+    public static void onclickEmergencyCall(Context context, int flag) {
+        Intent intent = new Intent("com.android.phone.EmergencyDialer.DIAL");
+        intent.setFlags(flag);
+        context.startActivity(intent);
+    }
 }

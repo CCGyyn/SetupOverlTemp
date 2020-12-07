@@ -15,9 +15,7 @@ public class VzwDataPlan extends Activity {
     }
 
     public void onclickEmergencyCall(View paramView) {
-        Intent intent = new Intent("com.android.phone.EmergencyDialer.DIAL");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        Utils.onclickEmergencyCall(getApplicationContext(), Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
     public void onclickReturn(View view) {

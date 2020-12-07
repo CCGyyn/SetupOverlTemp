@@ -698,7 +698,6 @@ public class VzwCloudSetupActivity extends Activity implements NavigationBar.Nav
 
 
     public void onClickEmergencyCall(View view) {
-        Intent intent = new Intent("com.android.phone.EmergencyDialer.DIAL");
-        startActivity(intent);
+        Utils.onclickEmergencyCall(getApplicationContext());
     }
 }

@@ -213,8 +213,7 @@ public class VzwPlanSelection extends Activity {
     }
 
     public void onclickEmergencyCall(View view) {
-        Intent intent = new Intent("com.android.phone.EmergencyDialer.DIAL");
-        startActivity(intent);
+        Utils.onclickEmergencyCall(getApplicationContext());
     }
 
     @JavascriptInterface
