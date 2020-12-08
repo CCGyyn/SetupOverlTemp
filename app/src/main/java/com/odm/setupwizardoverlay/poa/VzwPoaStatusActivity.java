@@ -1,6 +1,7 @@
 package com.odm.setupwizardoverlay.poa;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.PhoneNumberUtils;
@@ -171,6 +172,7 @@ public class VzwPoaStatusActivity extends PoaCommon {
                 mRightBtn.setOnClickListener(v -> {
                     //ccg
                     //turn off phone
+                    powerOff(getApplicationContext());
                 });
                 break;
         }
@@ -178,6 +180,20 @@ public class VzwPoaStatusActivity extends PoaCommon {
 
     public void onclickEmergencyCall(View view) {
         Utils.onclickEmergencyCall(getApplicationContext());
+    }
+
+    private void powerOff(Context context) {
+        Intent requestShutdown = new Intent(
+                Intent.ACTION_REQUEST_SHUTDOWN);
+        requestShutdown.putExtra(Intent.EXTRA_KEY_CONFIRM, false);
+        requestShutdown.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(requestShutdown);
+    }
+
+    private void sendActivationSuccessBroadcast(String mdn) {
+        Intent intent = new Intent(ACTION_SHOW_ACTIVATION_SUCCESS);
+        intent.setPackage("com.android.phone");
+        getApplicationContext().sendBroadcast(intent);
     }
 
 }

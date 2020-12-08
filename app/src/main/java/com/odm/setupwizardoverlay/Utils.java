@@ -307,4 +307,17 @@ public class Utils {
         intent.setFlags(flag);
         context.startActivity(intent);
     }
+
+    public static boolean isSetupComplete(Context paramContext) {
+        if (Settings.Secure.getInt(paramContext.getContentResolver(), "user_setup_complete", 0) == 1) {
+            Log.d(TAG, "post setup");
+            return true;
+        }
+        Log.d(TAG, "during setup");
+        return false;
+    }
+
+    public static boolean isValidMbn(String mdn) {
+        return !TextUtils.isEmpty(mdn) && !mdn.startsWith("00000");
+    }
 }
