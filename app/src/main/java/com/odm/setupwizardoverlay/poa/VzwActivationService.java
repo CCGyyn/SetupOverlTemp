@@ -19,6 +19,11 @@ import android.util.Log;
 import com.odm.setupwizardoverlay.R;
 import com.odm.setupwizardoverlay.Utils;
 
+import static com.odm.setupwizardoverlay.Constants.ACTION_PCO_CHANGE;
+import static com.odm.setupwizardoverlay.Constants.ACTION_POA_DEBUG_MODE_CHANGE;
+import static com.odm.setupwizardoverlay.Constants.PCO_DATA_0;
+import static com.odm.setupwizardoverlay.Constants.PCO_DATA_5;
+
 public class VzwActivationService extends Service {
 
     private static final String TAG = VzwActivationService.class.getSimpleName();
@@ -178,7 +183,7 @@ public class VzwActivationService extends Service {
             Log.d(TAG, "verifyYourAccount");
         }
 
-        Utils.enableComponentSetting(getApplicationContext(), DefaultActivity.class, true);
+        //Utils.enableComponentSetting(getApplicationContext(), DefaultActivity.class, true);
 
         Bundle args = new Bundle();
         args.putString("mCorrelationID", mCorrelationID);
@@ -186,10 +191,9 @@ public class VzwActivationService extends Service {
         args.putInt("mSecurityQuestionID", mSecurityQID);
         args.putInt("mOrderType",mOrderType);
 
-        Intent intent = new Intent(getApplicationContext(), DefaultActivity.class);
-        intent.putExtra(DefaultActivity.ARGS, args);
-        intent.putExtra(DefaultActivity.START_FROM_NOTIFICATION, true);
-        intent.putExtra(DefaultActivity.SPECIFIC_PREF, VzwPendingOrderAuthenticationFragment.class.getName());
+        Intent intent = new Intent(getApplicationContext(), VzwPendingOrderAuthenticationActivity.class);
+        intent.putExtra(PoaCommon.ARGS, args);
+        intent.putExtra(PoaCommon.START_FROM_NOTIFICATION, true);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
@@ -201,7 +205,7 @@ public class VzwActivationService extends Service {
             return;
         }
 
-        if (DEBUG && mPco == HANDLER_PCO_DATA_0) {
+        if (DEBUG && mPco == PCO_DATA_0) {
             Log.d(TAG, "handlePoaDebugModeChanged");
 
             boolean enable = Settings.Secure.getInt(getContentResolver(), PoaConfig.POA_SECURE_DEBUG_MODE, 0) == 1;
@@ -218,7 +222,7 @@ public class VzwActivationService extends Service {
         }
 
         switch (pco) {
-            case HANDLER_PCO_DATA_0:
+            case PCO_DATA_0:
                 if (REQ_RELEASE.equals(mReqType)) {
                     dealWithMdn();
                     mH.sendEmptyMessageDelayed(MSG_GET_MDN_TIMEOUT, 5 * 60 * 1000);
@@ -229,7 +233,7 @@ public class VzwActivationService extends Service {
                     prepareLookupOrder();
                 }
                 break;
-            case HANDLER_PCO_DATA_5: /// for product:
+            case PCO_DATA_5: /// for product:
                 if (!Utils.isValidMbn(Utils.getMDN(getApplicationContext()))) {
                     prepareLookupOrder();
                 }
@@ -627,7 +631,7 @@ public class VzwActivationService extends Service {
         intent.setAction(action);
         intent.setPackage("com.android.phone");
         intent.setFlags(Intent.FLAG_RECEIVER_INCLUDE_BACKGROUND); //qinyu add for background app
-        getApplicationContext().sendBroadcast(intent);
+        sendBroadcast(intent);
     }
 
 

@@ -89,6 +89,8 @@ public class VzwPoaStatusActivity extends PoaCommon {
             case NewActOrderNotFound:
                 showWifiButton();
                 mTvNotice.setText(R.string.poa_upgrade_order_not_found);
+                //ccg title Phone Activation
+                //ccg Emergency Call (911)] [Turn off phone]
                 break;
             case UpgradeOrderPasswordAuthFailed:
             case UpgradeOrderSSNAuthFailed:
@@ -96,6 +98,7 @@ public class VzwPoaStatusActivity extends PoaCommon {
             case NewActCustValidateSSNIncorrect:
                 setEmergencyBtnVisibility(View.VISIBLE);
                 mTvNotice.setText(R.string.poa_entry_not_match_records);
+                //ccg need 911,back,turn off phone
                 break;
             case UpgradeReleaseOrderAuthFailed:
             case UpgradeReleaseOrderFailedOrderNotExist:
@@ -103,12 +106,14 @@ public class VzwPoaStatusActivity extends PoaCommon {
             case NewActReleaseOrderPendingNotExist:
                 showWifiButton();
                 mTvNotice.setText(R.string.sorry_not_activate);
+                //ccg may be Smartphone VZ_REQ_ACTIVATIONUI_39819
                 break;
             case UpgradeReleaseOrderCorrelationIdIncorrect:
             case NewActReleaseOrderCoorrelIDIncorrect:
                 setEmergencyBtnVisibility(View.VISIBLE);
                 showWifiButton();
                 mTvNotice.setText(R.string.sorry_not_activate);
+                //ccg may be Smartphone VZ_REQ_ACTIVATIONUI_39819
                 break;
             case NewActOrderRestricted:
                 // get Device ID and SIM ID
@@ -126,6 +131,12 @@ public class VzwPoaStatusActivity extends PoaCommon {
                 break;
             case LookupOrderTimeout:
                 mTvNotice.setText(R.string.lookup_order_timeout);
+                //ccg
+                /*
+                *Activation Timeout VZ_REQ_ACTIVATIONUI_39796
+                *General timeout Smartphone VZ_REQ_ACTIVATIONUI_39843 Smartphone VZ_REQ_ACTIVATIONUI_39843
+                * Activation NOT successful VZ_REQ_ACTIVATIONUI_39774
+                */
                 break;
             case ValidateCustomerTimeout:
                 mTvNotice.setText(R.string.validate_customer_timeout);
@@ -135,9 +146,13 @@ public class VzwPoaStatusActivity extends PoaCommon {
                 mTvNotice.setText(R.string.release_order_timeout);
                 break;
             case Lost_and_Stolen_Device_or_SIM:
+                //ccg VZ_REQ_ACTIVATIONUI_39831
+                //only Emergency Cal
                 mTvNotice.setText(R.string.lost_and_stolen_device_or_sim);
                 break;
             case PendingProvisionErrorCode00013:
+                //VZ_REQ_ACTIVATIONUI_39843
+                //only Emergency Cal
                 mTvNotice.setText(R.string.pending_provision_error_code_00013);
                 break;
             case NewActReleaseOrderSuccess:
@@ -156,6 +171,8 @@ public class VzwPoaStatusActivity extends PoaCommon {
                         phoneNumber = PhoneNumberUtils.formatNumber(mdn, Locale.getDefault().getCountry());
                     }
 
+                    //ccg VZ_REQ_ACTIVATIONUI_39740
+                    //[Emergency Call (911)] [Next]
                     String info = String.format(getString(R.string.phone_is_now_active), phoneNumber);
                     mTvNotice.setText(info);
 
@@ -193,7 +210,7 @@ public class VzwPoaStatusActivity extends PoaCommon {
     private void sendActivationSuccessBroadcast(String mdn) {
         Intent intent = new Intent(ACTION_SHOW_ACTIVATION_SUCCESS);
         intent.setPackage("com.android.phone");
-        getApplicationContext().sendBroadcast(intent);
+        sendBroadcast(intent);
     }
 
 }

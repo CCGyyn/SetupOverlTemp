@@ -10,6 +10,8 @@ public class Constants {
 
     public static final String ACTION_PCO_CHANGE = "com.odm.setupwizardoverlay.PCO_CHANGE";
 
+    public static final String ACTION_POA_DEBUG_MODE_CHANGE = "com.android.provision.ACTION_DEBUG_MODE_CHANGE";
+
     public static final String KEY_PCO_DATA = "pco_data";
     public static final String KEY_ACTIVATION_STATUS = "vzw_activation_status";
 

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.odm.setupwizardoverlay">
 
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_PRECISE_PHONE_STATE" />
@@ -184,6 +185,19 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.odm.setupwizardoverlay.poa.VzwPendingOrderAuthentication" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".poa.VzwPendingOrderActivationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.odm.setupwizardoverlay.poa.VzwPendingOrderActivation" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

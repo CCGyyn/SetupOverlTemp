@@ -2,22 +2,32 @@ package com.odm.setupwizardoverlay.poa;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Html;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import com.odm.setupwizardoverlay.R;
 
-public class VzwPendingOrderAuthenticationActivity extends PoaCommon {
+import static com.odm.setupwizardoverlay.poa.LookUpOrderRequest.SECURITY_QUESTION_ID_001;
+import static com.odm.setupwizardoverlay.poa.LookUpOrderRequest.SECURITY_QUESTION_ID_002;
+
+public class VzwPendingOrderAuthenticationActivity extends PoaCommon implements DialogInterface.OnDismissListener{
 
     public static final String TAG = VzwPendingOrderAuthenticationActivity.class.getSimpleName();
     public static final String ATTEMPTS = "mAttempts";
@@ -47,8 +57,38 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon {
     private int mOrderType;
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mConfig = this.getSharedPreferences("config", Context.MODE_PRIVATE);
+        mAttempts = mConfig.getInt(ATTEMPTS, 0);
+        mReqRetry = 0;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //ccg
+//        setRightLabel(getString(R.string.label_next));
+    }
+
+    /*
+    ccg 可能不用显示mBtnVerify 用这个next代替,之后再说
+    @Override
+    protected boolean onNextKeyPressed(KeyEvent event) {
+        mPasswd = mEtPassword.getText().toString().trim();
+        if (TextUtils.isEmpty(mPasswd)) {
+            Toast.makeText(getContext(), "input is null", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        doVerify(mPasswd);
+
+        return true;
+    }*/
+
+    @Override
     protected int getLayoutResId() {
-        return 0;
+        return R.layout.po_authenticate;
     }
 
     @Override
@@ -58,12 +98,80 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon {
 
     @Override
     protected void initView() {
+        parseArgs();
+        //ccg title getString(R.string.po_authentication_title);
+        mTvBillingPassword = (TextView) findViewById(R.id.tv_enterBillingPassword);
+        mTvSsn = (TextView) findViewById(R.id.tv_enterSsn);
+        mEtPassword = (EditText) findViewById(R.id.et_txtPassword);
+        mTvAnotherWay = (TextView) findViewById(R.id.tv_billing_passwd_another_way);
+        mTvWhatIsBillingPasswd = (TextView) findViewById(R.id.tv_what_is_billing_passwd);
+
+        mBtnSwitchInput = (Button) findViewById(R.id.btn_switch_input);
+        mBtnVerify = (Button) findViewById(R.id.btn_verify);
 
     }
 
     @Override
     protected void initAction() {
+        mTvAnotherWay.setOnClickListener(v -> switchType());
+        //mBtnSwitchInput.setOnClickListener(this);
+        mBtnVerify.setOnClickListener(v -> {
+            String passwd = mEtPassword.getText().toString().trim();
+            if (TextUtils.isEmpty(passwd)) {
+                Toast.makeText(getApplicationContext(), "input is null", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
+            mReqRetry = 0;
+            doVerify(passwd);
+        });
+
+        if (mSecurityQID == 1) { /// Billing Password Exist
+            mTvAnotherWay.setVisibility(View.VISIBLE);
+            //mTvWhatIsBillingPasswd.setVisibility(View.VISIBLE);
+            //mBtnSwitchInput.setVisibility(View.VISIBLE);
+        }
+
+        mTvSsn.setVisibility(View.VISIBLE);
+    }
+
+    private void switchType() {
+        if (DEBUG) {
+            Log.e(TAG, "switchType mInputType=" + mInputType);
+        }
+        mInputType = mInputType == TYPE_1_PSW ? TYPE_2_SSN : TYPE_1_PSW; // 1,Billing Password.
+        boolean ssn = mInputType == TYPE_2_SSN; //2,SSN
+        mTvBillingPassword.setVisibility(ssn ? View.GONE : View.VISIBLE);
+        mTvSsn.setVisibility(ssn ? View.VISIBLE : View.GONE);
+        mEtPassword.setInputType(ssn ? InputType.TYPE_NUMBER_VARIATION_PASSWORD | InputType.TYPE_CLASS_NUMBER :
+                InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
+
+        mTvAnotherWay.setText(Html.fromHtml("<u>" + getString(ssn ? R.string.billing_passwd_another_way : R.string.ssn_another_way) + "</u>"));
+        if (mInputType == TYPE_1_PSW) {
+            mTvWhatIsBillingPasswd.setVisibility(View.VISIBLE);
+            mTvWhatIsBillingPasswd.setText(R.string.what_is_pin);
+        } else {
+            mTvWhatIsBillingPasswd.setVisibility(View.GONE);
+        }
+
+        mEtPassword.setText(""); // clear
+        mEtPassword.requestFocus();
+    }
+
+    private void parseArgs() {
+        Bundle args = getIntent().getBundleExtra(PoaCommon.ARGS);
+        if (args != null) {
+            mCorrelationID = args.getString("mCorrelationID");
+            mRequestID = args.getString("mRequestID");
+            mSecurityQID = args.getInt("mSecurityQuestionID", 0);
+            mOrderType = args.getInt("mOrderType");
+        }
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        removeMessages(MSG_RETRY_VALIDATE_ORDER_REQ); // remove delay msg
+        cancelValidateTask();
     }
 
     private class ValidateTask extends AsyncTask<Void, Void, Integer> {
@@ -186,7 +294,7 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon {
                     Log.e(TAG, "Password Validation failed");
                     //Toast.makeText(getContext(), "Validation failed", Toast.LENGTH_LONG).show();
                 }
-                showPoaStatus(VzwPoaStatusFragment.UpgradeOrderPasswordAuthFailed);
+                showPoaStatus(VzwPoaStatusActivity.UpgradeOrderPasswordAuthFailed);
                 break;
             case ValidateCustomerRequest.MSG_VALIDATE_CUSTOMER_TIMEOUT: /// timeout
                 consumed = true;
@@ -234,7 +342,7 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon {
         args.putString("mCorrelationID", request.getCorrelationID());
         args.putString("mRequestID", request.getRequestID());
         args.putInt("mOrderType", mOrderType);
-        args.putString("mSecurityQuestionID", mInputType == TYPE_1_PSW ? LookUpOrderRequest.SECURITY_QUESTION_ID_001 : LookUpOrderRequest.SECURITY_QUESTION_ID_002);
+        args.putString("mSecurityQuestionID", mInputType == TYPE_1_PSW ? SECURITY_QUESTION_ID_001 : SECURITY_QUESTION_ID_002);
         boolean callerNotification = this.isCallerNotification();
         if (callerNotification) {
             Toast.makeText(getApplicationContext(), getApplicationContext().getText(R.string.activating_title)+
@@ -247,15 +355,56 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon {
             intent.putExtra("args", args);
             intent.putExtra(VzwActivationService.REQ_TYPE, VzwActivationService.REQ_RELEASE);
             intent.setPackage(getApplicationContext().getPackageName());
-            getApplicationContext().startService(intent);
-            finishSetup(getActivity());
+            startService(intent);
+            //finishSetup(getActivity());
+            finish();
             this.overridePendingTransition(R.anim.anim_right_in, R.anim.anim_left_out);
         } else {
             if (DEBUG) {
                 Log.e(TAG, "startActivationPanel mOrderType=" + mOrderType);
             }
-            startFragmentPanel(VzwPendingOrderActivationFragment.class.getName(), args);
+            Intent intent = new Intent(this, VzwPendingOrderActivationActivity.class);
+            intent.putExtra(PoaCommon.ARGS, args);
+            startActivityPanel(intent);
         }
 
+    }
+
+    private void doVerify(String passwd) {
+        cancelValidateTask();
+
+        String sqid = mInputType == TYPE_1_PSW ? SECURITY_QUESTION_ID_001 : SECURITY_QUESTION_ID_002;
+        Log.e(TAG, "mInputType=" + mInputType + " sqid=" + sqid);
+        if (DEBUG) {
+            //Toast.makeText(getContext(), "Validate Order current attempts :" + mAttempts, Toast.LENGTH_LONG).show();
+            Log.d(TAG, "Validate Order current attempts :" + mAttempts);
+        }
+        showVerifyDialog();
+        removeMessages(MSG_RETRY_VALIDATE_ORDER_REQ);
+
+        mValidateTask = new ValidateTask(sqid, mCorrelationID, mRequestID, passwd);
+        mValidateTask.execute();
+    }
+
+    private void cancelValidateTask() {
+        if (mValidateTask != null && mValidateTask.getStatus() != AsyncTask.Status.FINISHED) {
+            if (DEBUG) {
+                Log.e(TAG, "task status=" + mValidateTask.getStatus());
+            }
+            mValidateTask.cancel(true);
+            mValidateTask = null;
+        }
+    }
+
+    private void showVerifyDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setOnDismissListener(this);
+            mProgressDialog.setMessage(getString(R.string.po_authentication_verifying));
+        }
+
+        if (!mProgressDialog.isShowing()) {
+            mProgressDialog.show();
+        }
     }
 }

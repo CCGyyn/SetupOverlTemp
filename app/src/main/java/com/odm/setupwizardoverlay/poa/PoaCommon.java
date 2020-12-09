@@ -18,6 +18,8 @@ import com.odm.setupwizardoverlay.Utils;
 public abstract class PoaCommon extends Activity {
     private static final String TAG = PoaCommon.class.getSimpleName();
     protected static final boolean DEBUG = Utils.DEBUG;
+    public static final String ARGS = "args";
+    public static final String START_FROM_NOTIFICATION = "start_from_notification";
     public static final String PHONE_ACTIVATED = "phone_activated";
     public static final String AGREE_TERMS_CONTIDIONS = "agree_terms_contidions";
     public static final String ACTIVATED_PHONE_NUMBER = "activated_phone_number";
@@ -47,11 +49,11 @@ public abstract class PoaCommon extends Activity {
     protected abstract void initAction();
 
     public void registerBroadcastReceiver(BroadcastReceiver receiver, IntentFilter filter) {
-        getApplicationContext().registerReceiver(receiver, filter);
+        registerReceiver(receiver, filter);
     }
 
     public void unregisterBroadcastReceiver(BroadcastReceiver receiver) {
-        getApplicationContext().unregisterReceiver(receiver);
+        unregisterReceiver(receiver);
     }
 
     public static void provision(Activity activity) {
@@ -114,6 +116,7 @@ public abstract class PoaCommon extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        clearIfNeeded();
         if (mInternalHandler != null) {
             if (DEBUG) Log.d(TAG, "onDestroy removeCallbacksAndMessages");
             mInternalHandler.removeCallbacksAndMessages(null);
@@ -131,8 +134,6 @@ public abstract class PoaCommon extends Activity {
         clearIfNeeded();
         startActivity(intent);
     }
-
-    public static final String START_FROM_NOTIFICATION = "start_from_notification";
 
     private boolean isCallerNotification = false;
 

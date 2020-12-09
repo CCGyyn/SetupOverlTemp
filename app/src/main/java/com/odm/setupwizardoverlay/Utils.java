@@ -1,5 +1,6 @@
 package com.odm.setupwizardoverlay;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -319,5 +320,32 @@ public class Utils {
 
     public static boolean isValidMbn(String mdn) {
         return !TextUtils.isEmpty(mdn) && !mdn.startsWith("00000");
+    }
+
+    public static void enableComponentSetting(Context context, Class<?> clazz, boolean enable) {
+        // enable/disable this activity from the package manager.
+        PackageManager pm = context.getPackageManager();
+        ComponentName name = new ComponentName(context, clazz);
+        pm.setComponentEnabledSetting(name, enable ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                : PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+    }
+
+    public static boolean getAirplaneMode(Context context) {
+        return Settings.Global.getInt(context.getContentResolver(),
+                Settings.Global.AIRPLANE_MODE_ON, 0) == 1;
+    }
+
+    /*set AirplaneMode & sendBroadcast*/
+    public static void setAirplaneMode(Context context, boolean enabling) {
+        Settings.Global.putInt(context.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, enabling ? 1 : 0);
+        if (DEBUG) {
+            int mode = Settings.Global.getInt(context.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, 0);
+            Log.d(TAG, "mode=" + mode);
+        }
+
+        // Post the intent
+        Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+        intent.putExtra("state", enabling);
+        context.sendBroadcastAsUser(intent, UserHandle.ALL);
     }
 }

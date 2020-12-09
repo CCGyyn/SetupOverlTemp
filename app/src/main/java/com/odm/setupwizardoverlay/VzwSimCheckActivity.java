@@ -23,7 +23,9 @@ import android.view.WindowManager;
 import com.android.setupwizardlib.util.WizardManagerHelper;
 
 import com.odm.setupwizardoverlay.poa.LookUpOrderRequest;
+import com.odm.setupwizardoverlay.poa.PoaCommon;
 import com.odm.setupwizardoverlay.poa.PoaConfig;
+import com.odm.setupwizardoverlay.poa.VzwPendingOrderAuthenticationActivity;
 import com.odm.setupwizardoverlay.poa.VzwPoaRequest;
 import com.odm.setupwizardoverlay.poa.VzwPoaStatusActivity;
 import com.qualcomm.qti.remoteSimlock.manager.RemoteSimlockManager;
@@ -805,7 +807,9 @@ public class VzwSimCheckActivity extends Activity {
             args.putInt("mSecurityQuestionID", mSecurityQID);
             args.putInt("mOrderType",request.getOrderType());
             Log.e(TAG, "mOrderType=" + request.getOrderType());
-            startFragmentPanel(VzwPendingOrderAuthenticationFragment.class.getName(), args);
+            Intent intent = new Intent(getApplicationContext(), VzwPendingOrderAuthenticationActivity.class);
+            intent.putExtra(PoaCommon.ARGS, args);
+            startActivityPanel(intent);
             Log.d(TAG, "handlePendingOrderFound mSecurityQID =" + mSecurityQID
                     + "\n mRequestID=" + mRequestID + "\n mCorrelationID=" + mCorrelationID);
 
