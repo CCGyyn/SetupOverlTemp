@@ -1,4 +1,4 @@
-package com.odm.setupwizardoverlay.poa;
+package com.odm.setupwizardoverlay;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -16,8 +16,11 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.odm.setupwizardoverlay.R;
-import com.odm.setupwizardoverlay.Utils;
+import com.android.setupwizardlib.util.WizardManagerHelper;
+import com.odm.setupwizardoverlay.poa.LookUpOrderRequest;
+import com.odm.setupwizardoverlay.poa.PoaCommon;
+import com.odm.setupwizardoverlay.poa.ReleaseOrderRequest;
+import com.odm.setupwizardoverlay.poa.VzwPoaRequest;
 import com.odm.setupwizardoverlay.view.ScrollViewExt;
 
 import static com.odm.setupwizardoverlay.Constants.ACTION_PCO_CHANGE;
@@ -300,7 +303,8 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
     }
 
     private void showPoaStatus(int status) {
-        Intent intent = new Intent(this, VzwPoaStatusActivity.class);
+        //start to VzwPoaStatusActivity
+        Intent intent = WizardManagerHelper.getNextIntent(getIntent(), 201);
         intent.putExtra(VzwPoaStatusActivity.POA_STATUS_KEY, status);
         intent.putExtra(VzwPoaStatusActivity.POA_ORDER_TYPE_KEY, mOrderType);
         startActivityPanel(intent);
@@ -317,7 +321,8 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
         }
         args.putInt(VzwPoaStatusActivity.POA_STATUS_KEY, value);
         args.putInt(VzwPoaStatusActivity.POA_ORDER_TYPE_KEY, mOrderType);
-        Intent intent = new Intent(this, VzwPoaStatusActivity.class);
+        //start to VzwPoaStatusActivity
+        Intent intent = WizardManagerHelper.getNextIntent(getIntent(), 201);
         intent.putExtra(PoaCommon.ARGS, args);
         startActivityPanel(intent);
         if (DEBUG) {

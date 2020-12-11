@@ -1,6 +1,5 @@
-package com.odm.setupwizardoverlay.poa;
+package com.odm.setupwizardoverlay;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,8 +21,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.odm.setupwizardoverlay.R;
-import com.odm.setupwizardoverlay.Utils;
+import com.android.setupwizardlib.util.WizardManagerHelper;
+import com.odm.setupwizardoverlay.poa.PoaCommon;
+import com.odm.setupwizardoverlay.poa.ValidateCustomerRequest;
+import com.odm.setupwizardoverlay.poa.VzwActivationService;
+import com.odm.setupwizardoverlay.poa.VzwPoaRequest;
 
 import static com.odm.setupwizardoverlay.poa.LookUpOrderRequest.SECURITY_QUESTION_ID_001;
 import static com.odm.setupwizardoverlay.poa.LookUpOrderRequest.SECURITY_QUESTION_ID_002;
@@ -320,7 +322,8 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon implements 
     }
 
     private void showPoaStatus(int status) {
-        Intent intent = new Intent(this, VzwPoaStatusActivity.class);
+        //start to VzwPoaStatusActivity
+        Intent intent = WizardManagerHelper.getNextIntent(getIntent(), 201);
         intent.putExtra(VzwPoaStatusActivity.POA_STATUS_KEY, status);
         intent.putExtra(VzwPoaStatusActivity.POA_ORDER_TYPE_KEY, mOrderType);
         startActivityPanel(intent);
@@ -363,7 +366,8 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon implements 
             if (DEBUG) {
                 Log.e(TAG, "startActivationPanel mOrderType=" + mOrderType);
             }
-            Intent intent = new Intent(this, VzwPendingOrderActivationActivity.class);
+            //start to VzwPendingOrderActivationActivity
+            Intent intent = WizardManagerHelper.getNextIntent(getIntent(), 203);
             intent.putExtra(PoaCommon.ARGS, args);
             startActivityPanel(intent);
         }

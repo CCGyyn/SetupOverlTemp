@@ -137,6 +137,7 @@ public abstract class PoaCommon extends Activity {
     protected void startActivityPanel(Intent intent) {
         clearIfNeeded();
         startActivity(intent);
+        finish();
     }
 
     private boolean isCallerNotification = false;

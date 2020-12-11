@@ -1,6 +1,5 @@
-package com.odm.setupwizardoverlay.poa;
+package com.odm.setupwizardoverlay;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,12 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.android.setupwizardlib.util.WizardManagerHelper;
-import com.odm.setupwizardoverlay.Constants;
-import com.odm.setupwizardoverlay.R;
-import com.odm.setupwizardoverlay.ShowSimStatusActivity;
-import com.odm.setupwizardoverlay.Utils;
-import com.odm.setupwizardoverlay.VzwCloudSetupActivity;
-import com.odm.setupwizardoverlay.VzwSimCheckActivity;
+import com.odm.setupwizardoverlay.poa.LookUpOrderRequest;
+import com.odm.setupwizardoverlay.poa.PoaCommon;
 
 import java.util.Locale;
 
@@ -177,7 +172,8 @@ public class VzwPoaStatusActivity extends PoaCommon {
                     intent.putExtra(Constants.KEY_SIM_STATUS, Constants.ACTION_SKIP_DISPLAY);
                     intent.putExtra(Constants.KEY_PCO_DATA, Constants.PCO_DATA_0);
                     startActivityPanel(intent);*/
-                    Intent intent = new Intent(this, VzwCloudSetupActivity.class);
+                    //start to VzwCloudSetupActivity
+                    Intent intent = WizardManagerHelper.getNextIntent(getIntent(), 102);
                     startActivityPanel(intent);
                 });
                 Bundle args = getIntent().getBundleExtra(PoaCommon.ARGS);
@@ -212,8 +208,11 @@ public class VzwPoaStatusActivity extends PoaCommon {
 
     private void initWifiButton(Button button) {
         button.setText(R.string.wi_fi);
-        //ccg 跳转使用wifi
+        //ccg
         button.setOnClickListener(v -> {
+            //start to carrier_setup, use wifi
+            Intent intent = WizardManagerHelper.getNextIntent(getIntent(), RESULT_OK);
+            startActivityPanel(intent);
         });
     }
 

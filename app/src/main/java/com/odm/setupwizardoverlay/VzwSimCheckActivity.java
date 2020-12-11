@@ -17,7 +17,6 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
 
 import com.android.setupwizardlib.util.WizardManagerHelper;
@@ -26,9 +25,7 @@ import com.odm.setupwizardoverlay.poa.LookUpOrderRequest;
 import com.odm.setupwizardoverlay.poa.PoaCommon;
 import com.odm.setupwizardoverlay.poa.PoaConfig;
 import com.odm.setupwizardoverlay.poa.VzwActivationService;
-import com.odm.setupwizardoverlay.poa.VzwPendingOrderAuthenticationActivity;
 import com.odm.setupwizardoverlay.poa.VzwPoaRequest;
-import com.odm.setupwizardoverlay.poa.VzwPoaStatusActivity;
 import com.qualcomm.qti.remoteSimlock.manager.RemoteSimlockManager;
 import com.qualcomm.qti.remoteSimlock.manager.RemoteSimlockManagerCallback;
 import com.android.internal.telephony.TelephonyIntents;
@@ -778,7 +775,8 @@ public class VzwSimCheckActivity extends Activity {
 
     private void startActivityPanel(Intent intent) {
         clearIfNeeded();
-        startActivity(intent);
+        startActivityForResult(intent, 1);
+        finish();
     }
 
     private void handlePendingOrderFound(LookUpOrderRequest request) {
@@ -788,7 +786,8 @@ public class VzwSimCheckActivity extends Activity {
             Log.e(TAG, "handlePendingOrderFound Restricted Ac");
             String errorCode = request.getErrorCode();
             Log.d(TAG, "handlePendingOrderFound: mLookupReq.getErrorCode=" + errorCode + " ,getOrderType=" + request.getOrderType());
-            Intent intent = new Intent(this, VzwPoaStatusActivity.class);
+            //start to VzwPoaStatusActivity
+            Intent intent = WizardManagerHelper.getNextIntent(getIntent(), 201);
             intent.putExtra(VzwPoaStatusActivity.POA_STATUS_KEY, VzwPoaStatusActivity.NewActOrderRestricted);
             intent.putExtra(VzwPoaStatusActivity.POA_ORDER_TYPE_KEY, request.getOrderType());
             startActivityPanel(intent);
@@ -810,7 +809,8 @@ public class VzwSimCheckActivity extends Activity {
             args.putInt("mSecurityQuestionID", mSecurityQID);
             args.putInt("mOrderType",request.getOrderType());
             Log.e(TAG, "mOrderType=" + request.getOrderType());
-            Intent intent = new Intent(getApplicationContext(), VzwPendingOrderAuthenticationActivity.class);
+            //start to VzwPendingOrderAuthenticationActivity
+            Intent intent = WizardManagerHelper.getNextIntent(getIntent(), 202);
             intent.putExtra(PoaCommon.ARGS, args);
             startActivityPanel(intent);
             Log.d(TAG, "handlePendingOrderFound mSecurityQID =" + mSecurityQID
@@ -829,7 +829,8 @@ public class VzwSimCheckActivity extends Activity {
             Log.d(TAG, "lookup order timeout errorCode=" + errorCode);
             Log.d(TAG, "handlePendingOrderLookupTimeout: mLookupReq.getErrorCode=" + errorCode + " ,getOrderType=" + request.getOrderType());
         }
-        Intent intent = new Intent(this, VzwPoaStatusActivity.class);
+        //start to VzwPoaStatusActivity
+        Intent intent = WizardManagerHelper.getNextIntent(getIntent(), 201);
         intent.putExtra(VzwPoaStatusActivity.POA_STATUS_KEY, VzwPoaStatusActivity.LookupOrderTimeout);
         intent.putExtra(VzwPoaStatusActivity.POA_ORDER_TYPE_KEY, request.getOrderType());
         startActivityPanel(intent);
@@ -841,7 +842,8 @@ public class VzwSimCheckActivity extends Activity {
             //Toast.makeText(getActivity(), "no order found errorCode=" + errorCode, Toast.LENGTH_SHORT).show();
             Log.d(TAG, "handlePendingOrderNotFound: mLookupReq.getErrorCode=" + errorCode + " ,getOrderType=" + request.getOrderType());
         }
-        Intent intent = new Intent(this, VzwPoaStatusActivity.class);
+        //start to VzwPoaStatusActivity
+        Intent intent = WizardManagerHelper.getNextIntent(getIntent(), 201);
         intent.putExtra(VzwPoaStatusActivity.POA_STATUS_KEY, VzwPoaStatusActivity.NewActOrderNotFound);
         intent.putExtra(VzwPoaStatusActivity.POA_ORDER_TYPE_KEY, request.getOrderType());
         startActivityPanel(intent);

@@ -18,6 +18,7 @@ import android.util.Log;
 
 import com.odm.setupwizardoverlay.R;
 import com.odm.setupwizardoverlay.Utils;
+import com.odm.setupwizardoverlay.VzwPendingOrderAuthenticationActivity;
 
 import static com.odm.setupwizardoverlay.Constants.ACTION_PCO_CHANGE;
 import static com.odm.setupwizardoverlay.Constants.ACTION_POA_DEBUG_MODE_CHANGE;
@@ -166,7 +167,7 @@ public class VzwActivationService extends Service {
     private void showReadToActivateDialog() {
         Context context = getApplicationContext();
         AlertDialog.Builder builder;
-        builder = new AlertDialog.Builder(context).setIcon(R.mipmap.ic_launcher)
+        builder = new AlertDialog.Builder(context).setIcon(R.drawable.ic_vzw_services)
                 .setMessage(context.getString(R.string.ready_to_activate) + "?")
                 .setPositiveButton(R.string.activate_now, (dialog, which) -> {
                     verifyYourAccount();

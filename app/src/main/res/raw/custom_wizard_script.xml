@@ -16,6 +16,21 @@
         <result wizard:action="carrier_setup" />
         <result wizard:resultCode="101" wizard:action="carrier_setup" />
         <result wizard:resultCode="102" wizard:action="vzw_plan_selection" />
+        <result wizard:resultCode="201" wizard:action="vzw_poa_status" />
+        <result wizard:resultCode="202" wizard:action="vzw_pending_order_authentication" />
+    </WizardAction>
+    <WizardAction wizard:uri="intent:#Intent;action=com.odm.setupwizardoverlay.poa.VzwPoaStatus;end" id="vzw_poa_status">
+        <result wizard:action="carrier_setup" />
+        <result wizard:resultCode="102" wizard:action="cloud" />
+    </WizardAction>
+    <WizardAction wizard:uri="intent:#Intent;action=com.odm.setupwizardoverlay.poa.VzwPendingOrderAuthentication;end" id="vzw_pending_order_authentication">
+        <result wizard:action="carrier_setup" />
+        <result wizard:resultCode="201" wizard:action="vzw_poa_status" />
+        <result wizard:resultCode="203" wizard:action="vzw_pending_activation" />
+    </WizardAction>
+    <WizardAction wizard:uri="intent:#Intent;action=com.odm.setupwizardoverlay.poa.VzwPendingOrderActivation;end" id="vzw_pending_activation">
+        <result wizard:action="carrier_setup" />
+        <result wizard:resultCode="201" wizard:action="vzw_poa_status" />
     </WizardAction>
     <WizardAction wizard:uri="intent:#Intent;action=com.odm.setupwizardoverlay.VZW_PLAN_SELECTION_FROM_SETUP;end" id="vzw_plan_selection">
         <result wizard:action="carrier_setup" />
@@ -60,7 +75,7 @@
     </WizardAction>
     <WizardAction wizard:uri="intent:#Intent;action=com.google.android.setupwizard.FACTORY_RESET;end" id="factory_reset" />
     <WizardAction wizard:uri="intent:#Intent;action=com.google.android.setupwizard.CHECK_FRP;end" id="check_frp" />
-    <WizardAction wizard:script="android.resource://com.google.android.setupwizard/xml/wizard_script_connect_and_update_flow" id="connect_and_update">
+    <WizardAction wizard:script="android.resource://com.google.android.gmsintegration/raw/custom_wizard_script_connect_and_update_flow" id="connect_and_update">
         <result wizard:action="no_network_flow" wizard:name="no_connection" wizard:resultCode="1" />
     </WizardAction>
     <WizardAction wizard:script="android.resource://com.google.android.setupwizard/xml/wizard_script_zero_touch_flow" id="zero_touch">

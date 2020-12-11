@@ -165,7 +165,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".poa.VzwPoaStatusActivity"
+            android:name=".VzwPoaStatusActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
@@ -178,7 +178,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".poa.VzwPendingOrderAuthenticationActivity"
+            android:name=".VzwPendingOrderAuthenticationActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
@@ -191,7 +191,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".poa.VzwPendingOrderActivationActivity"
+            android:name=".VzwPendingOrderActivationActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
