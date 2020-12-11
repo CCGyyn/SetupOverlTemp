@@ -25,6 +25,7 @@ import com.android.setupwizardlib.util.WizardManagerHelper;
 import com.odm.setupwizardoverlay.poa.LookUpOrderRequest;
 import com.odm.setupwizardoverlay.poa.PoaCommon;
 import com.odm.setupwizardoverlay.poa.PoaConfig;
+import com.odm.setupwizardoverlay.poa.VzwActivationService;
 import com.odm.setupwizardoverlay.poa.VzwPendingOrderAuthenticationActivity;
 import com.odm.setupwizardoverlay.poa.VzwPoaRequest;
 import com.odm.setupwizardoverlay.poa.VzwPoaStatusActivity;
@@ -119,6 +120,8 @@ public class VzwSimCheckActivity extends Activity {
 
         mReqRetry = 0;
 
+        Intent intentService = new Intent(mContext, VzwActivationService.class);
+        startService(intentService);
         // register sim lock callback to get unlockStatus
         registerSimLockCallback(getApplicationContext());
 
@@ -826,10 +829,10 @@ public class VzwSimCheckActivity extends Activity {
             Log.d(TAG, "lookup order timeout errorCode=" + errorCode);
             Log.d(TAG, "handlePendingOrderLookupTimeout: mLookupReq.getErrorCode=" + errorCode + " ,getOrderType=" + request.getOrderType());
         }
-        Bundle args = new Bundle();
-        args.putInt(VzwPoaStatusFragment.POA_STATUS_KEY, VzwPoaStatusFragment.LookupOrderTimeout);
-        args.putInt(VzwPoaStatusFragment.POA_ORDER_TYPE_KEY, request.getOrderType());
-        startFragmentPanel(VzwPoaStatusFragment.class.getName(), args);
+        Intent intent = new Intent(this, VzwPoaStatusActivity.class);
+        intent.putExtra(VzwPoaStatusActivity.POA_STATUS_KEY, VzwPoaStatusActivity.LookupOrderTimeout);
+        intent.putExtra(VzwPoaStatusActivity.POA_ORDER_TYPE_KEY, request.getOrderType());
+        startActivityPanel(intent);
     }
 
     void handlePendingOrderNotFound(LookUpOrderRequest request) {
@@ -838,10 +841,10 @@ public class VzwSimCheckActivity extends Activity {
             //Toast.makeText(getActivity(), "no order found errorCode=" + errorCode, Toast.LENGTH_SHORT).show();
             Log.d(TAG, "handlePendingOrderNotFound: mLookupReq.getErrorCode=" + errorCode + " ,getOrderType=" + request.getOrderType());
         }
-        Bundle args = new Bundle();
-        args.putInt(VzwPoaStatusFragment.POA_STATUS_KEY, VzwPoaStatusFragment.NewActOrderNotFound);
-        args.putInt(VzwPoaStatusFragment.POA_ORDER_TYPE_KEY, request.getOrderType());
-        startFragmentPanel(VzwPoaStatusFragment.class.getName(), args);
+        Intent intent = new Intent(this, VzwPoaStatusActivity.class);
+        intent.putExtra(VzwPoaStatusActivity.POA_STATUS_KEY, VzwPoaStatusActivity.NewActOrderNotFound);
+        intent.putExtra(VzwPoaStatusActivity.POA_ORDER_TYPE_KEY, request.getOrderType());
+        startActivityPanel(intent);
     }
 
     private void clearIfNeeded() {

@@ -79,7 +79,7 @@
                     android:visibility="gone" />
             </LinearLayout>
 
-            <Button
+            <!--<Button
                 android:id="@+id/btn_switch_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,10 +95,11 @@
                 android:text="Verify"
                 android:textAllCaps="false"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true" />
-            <!--                android:visibility="gone"-->
-
+                android:layout_alignParentRight="true" />-->
+            <include
+                layout="@layout/emergency_and_right_btn"/>
         </LinearLayout>
 
     </com.odm.setupwizardoverlay.view.ScrollViewExt>

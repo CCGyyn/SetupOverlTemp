@@ -23,6 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.odm.setupwizardoverlay.R;
+import com.odm.setupwizardoverlay.Utils;
 
 import static com.odm.setupwizardoverlay.poa.LookUpOrderRequest.SECURITY_QUESTION_ID_001;
 import static com.odm.setupwizardoverlay.poa.LookUpOrderRequest.SECURITY_QUESTION_ID_002;
@@ -46,6 +47,8 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon implements 
     private TextView mTvWhatIsBillingPasswd;
     private Button mBtnVerify;
     private Button mBtnSwitchInput;
+    private Button mEmergencyBtn;
+    private Button mRightBtn;
     private int mInputType = TYPE_2_SSN;  /// 1,Billing Password. 2,SSN
 
     private ValidateTask mValidateTask;
@@ -71,21 +74,6 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon implements 
 //        setRightLabel(getString(R.string.label_next));
     }
 
-    /*
-    ccg 可能不用显示mBtnVerify 用这个next代替,之后再说
-    @Override
-    protected boolean onNextKeyPressed(KeyEvent event) {
-        mPasswd = mEtPassword.getText().toString().trim();
-        if (TextUtils.isEmpty(mPasswd)) {
-            Toast.makeText(getContext(), "input is null", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        doVerify(mPasswd);
-
-        return true;
-    }*/
-
     @Override
     protected int getLayoutResId() {
         return R.layout.po_authenticate;
@@ -106,16 +94,18 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon implements 
         mTvAnotherWay = (TextView) findViewById(R.id.tv_billing_passwd_another_way);
         mTvWhatIsBillingPasswd = (TextView) findViewById(R.id.tv_what_is_billing_passwd);
 
-        mBtnSwitchInput = (Button) findViewById(R.id.btn_switch_input);
-        mBtnVerify = (Button) findViewById(R.id.btn_verify);
-
+        /*mBtnSwitchInput = (Button) findViewById(R.id.btn_switch_input);
+        mBtnVerify = (Button) findViewById(R.id.btn_verify);*/
+        mEmergencyBtn = (Button) findViewById(R.id.emergency_button_btn);
+        mRightBtn = (Button) findViewById(R.id.right_btn);
+        mRightBtn.setText(R.string.label_next);
     }
 
     @Override
     protected void initAction() {
         mTvAnotherWay.setOnClickListener(v -> switchType());
         //mBtnSwitchInput.setOnClickListener(this);
-        mBtnVerify.setOnClickListener(v -> {
+        /*mBtnVerify.setOnClickListener(v -> {
             String passwd = mEtPassword.getText().toString().trim();
             if (TextUtils.isEmpty(passwd)) {
                 Toast.makeText(getApplicationContext(), "input is null", Toast.LENGTH_SHORT).show();
@@ -124,7 +114,7 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon implements 
 
             mReqRetry = 0;
             doVerify(passwd);
-        });
+        });*/
 
         if (mSecurityQID == 1) { /// Billing Password Exist
             mTvAnotherWay.setVisibility(View.VISIBLE);
@@ -133,6 +123,16 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon implements 
         }
 
         mTvSsn.setVisibility(View.VISIBLE);
+
+        mRightBtn.setOnClickListener(v -> {
+            mPasswd = mEtPassword.getText().toString().trim();
+            if (TextUtils.isEmpty(mPasswd)) {
+                Toast.makeText(this, "input is null", Toast.LENGTH_SHORT).show();
+                return ;
+            }
+
+            doVerify(mPasswd);
+        });
     }
 
     private void switchType() {
@@ -406,5 +406,9 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon implements 
         if (!mProgressDialog.isShowing()) {
             mProgressDialog.show();
         }
+    }
+
+    public void onclickEmergencyCall(View view) {
+        Utils.onclickEmergencyCall(getApplicationContext());
     }
 }

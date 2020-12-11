@@ -14,8 +14,13 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.android.setupwizardlib.util.WizardManagerHelper;
+import com.odm.setupwizardoverlay.Constants;
 import com.odm.setupwizardoverlay.R;
+import com.odm.setupwizardoverlay.ShowSimStatusActivity;
 import com.odm.setupwizardoverlay.Utils;
+import com.odm.setupwizardoverlay.VzwCloudSetupActivity;
+import com.odm.setupwizardoverlay.VzwSimCheckActivity;
 
 import java.util.Locale;
 
@@ -84,38 +89,40 @@ public class VzwPoaStatusActivity extends PoaCommon {
         mEmergencyBtn = (Button) findViewById(R.id.emergency_button_btn);
         mRightBtn = (Button) findViewById(R.id.right_btn);
 
+        mTitle.setText(R.string.phone_act_title);
+
         switch (mPoaStatus) {
             case UpgradeOrderNotFound:
             case NewActOrderNotFound:
-                showWifiButton();
+                //mTitle.setText(R.string.phone_act_title);
                 mTvNotice.setText(R.string.poa_upgrade_order_not_found);
-                //ccg title Phone Activation
-                //ccg Emergency Call (911)] [Turn off phone]
+                //ccg Emergency Call (911)] [Turn off phone] 不确定
+                initWifiButton(mRightBtn);
                 break;
             case UpgradeOrderPasswordAuthFailed:
             case UpgradeOrderSSNAuthFailed:
             case NewActCustValidatePasswdIncorrect:
             case NewActCustValidateSSNIncorrect:
-                setEmergencyBtnVisibility(View.VISIBLE);
                 mTvNotice.setText(R.string.poa_entry_not_match_records);
-                //ccg need 911,back,turn off phone
+                //VZ_REQ_ACTIVATIONUI_39837
+                initBackButton(mRightBtn);
                 break;
             case UpgradeReleaseOrderAuthFailed:
             case UpgradeReleaseOrderFailedOrderNotExist:
             case NewActReleaseOrderFailedAuthError:
             case NewActReleaseOrderPendingNotExist:
-                showWifiButton();
                 mTvNotice.setText(R.string.sorry_not_activate);
                 //ccg may be Smartphone VZ_REQ_ACTIVATIONUI_39819
+                initWifiButton(mRightBtn);
                 break;
             case UpgradeReleaseOrderCorrelationIdIncorrect:
             case NewActReleaseOrderCoorrelIDIncorrect:
-                setEmergencyBtnVisibility(View.VISIBLE);
-                showWifiButton();
                 mTvNotice.setText(R.string.sorry_not_activate);
                 //ccg may be Smartphone VZ_REQ_ACTIVATIONUI_39819
+                initWifiButton(mRightBtn);
                 break;
             case NewActOrderRestricted:
+                //AU VZ_REQ_ACTIVATIONUI_39821
                 // get Device ID and SIM ID
                 mTitle.setText(R.string.acc_restricted_title);
                 String imsi = Utils.getImsi(getApplicationContext());
@@ -127,45 +134,58 @@ public class VzwPoaStatusActivity extends PoaCommon {
                     Log.d(TAG, "restricted info=" + restrictedInfo);
                 }
                 mTvNotice.setText(Html.fromHtml(restrictedInfo));
-                mRightBtn.setText(R.string.turn_off_phone);
+                //mRightBtn.setText(R.string.turn_off_phone);
+                onlyEmergencyBtn();
                 break;
             case LookupOrderTimeout:
                 mTvNotice.setText(R.string.lookup_order_timeout);
                 //ccg
                 /*
-                *Activation Timeout VZ_REQ_ACTIVATIONUI_39796
-                *General timeout Smartphone VZ_REQ_ACTIVATIONUI_39843 Smartphone VZ_REQ_ACTIVATIONUI_39843
-                * Activation NOT successful VZ_REQ_ACTIVATIONUI_39774
+                *Activation Timeout VZ_REQ_ACTIVATIONUI_39796 Buttons: [Emergency Call (911)] [Restart phone] [Use Wi-F
+                *General timeout Smartphone VZ_REQ_ACTIVATIONUI_39843 Smartphone VZ_REQ_ACTIVATIONUI_39843 Buttons: [Emergency Call (911)]
+                * Activation NOT successful VZ_REQ_ACTIVATIONUI_39774 Buttons: [Emergency Call (911)] [Use Wi-Fi]
                 */
+                initWifiButton(mRightBtn);
                 break;
             case ValidateCustomerTimeout:
                 mTvNotice.setText(R.string.validate_customer_timeout);
+                //initWifiButton(mRightBtn);
+                initBackButton(mRightBtn);
                 break;
             case ReleaseOrderTimeout:
-                showWifiButton();
                 mTvNotice.setText(R.string.release_order_timeout);
+                initWifiButton(mRightBtn);
                 break;
             case Lost_and_Stolen_Device_or_SIM:
-                //ccg VZ_REQ_ACTIVATIONUI_39831
-                //only Emergency Cal
+                //VZ_REQ_ACTIVATIONUI_39831
+                //VZ_REQ_ACTIVATIONUI_39843
                 mTvNotice.setText(R.string.lost_and_stolen_device_or_sim);
+                onlyEmergencyBtn();
                 break;
             case PendingProvisionErrorCode00013:
-                //VZ_REQ_ACTIVATIONUI_39843
+                //ccg VZ_REQ_ACTIVATIONUI_39843
                 //only Emergency Cal
                 mTvNotice.setText(R.string.pending_provision_error_code_00013);
+                initWifiButton(mRightBtn);
                 break;
             case NewActReleaseOrderSuccess:
             case UpgradeReleaseSuccess5CharAccountPIN:
                 isActivated = true;
-                setRightLabel(getString(R.string.label_next));
-
-                Bundle args = getArguments();
+                mRightBtn.setText(R.string.label_next);
+                mRightBtn.setOnClickListener(v -> {
+                    /*Intent intent = new Intent(this, ShowSimStatusActivity.class);
+                    intent.putExtra(Constants.KEY_SIM_STATUS, Constants.ACTION_SKIP_DISPLAY);
+                    intent.putExtra(Constants.KEY_PCO_DATA, Constants.PCO_DATA_0);
+                    startActivityPanel(intent);*/
+                    Intent intent = new Intent(this, VzwCloudSetupActivity.class);
+                    startActivityPanel(intent);
+                });
+                Bundle args = getIntent().getBundleExtra(PoaCommon.ARGS);
                 if (args != null) {
                     String mdn = args.getString("mdn", null);
                     int type = args.getInt(POA_ORDER_TYPE_KEY);
                     boolean showEm = (type == LookUpOrderRequest.MSG_PO_NEW_ORDER) || mPoaStatus == UpgradeReleaseSuccess5CharAccountPIN;
-                    setEmergencyBtnVisibility(showEm ? View.VISIBLE : View.GONE);
+                    mEmergencyBtn.setVisibility(showEm ? View.VISIBLE : View.INVISIBLE);
                     String phoneNumber = getString(R.string.phone_number_unknown);
                     if (mdn != null) {
                         phoneNumber = PhoneNumberUtils.formatNumber(mdn, Locale.getDefault().getCountry());
@@ -184,15 +204,33 @@ public class VzwPoaStatusActivity extends PoaCommon {
 
     @Override
     protected void initAction() {
-        switch (mPoaStatus) {
-            case NewActOrderRestricted:
-                mRightBtn.setOnClickListener(v -> {
-                    //ccg
-                    //turn off phone
-                    powerOff(getApplicationContext());
-                });
-                break;
-        }
+    }
+
+    private void onlyEmergencyBtn() {
+        mRightBtn.setVisibility(View.GONE);
+    }
+
+    private void initWifiButton(Button button) {
+        button.setText(R.string.wi_fi);
+        //ccg 跳转使用wifi
+        button.setOnClickListener(v -> {
+        });
+    }
+
+    private void initBackButton(Button button) {
+        button.setText(R.string.label_back);
+        button.setOnClickListener(v -> {
+            onBackPressed();
+        });
+    }
+
+    private void initTurnOffPhone(Button button) {
+        button.setText(R.string.turn_off_phone);
+        button.setOnClickListener(v -> {
+            //ccg
+            //turn off phone
+            powerOff(this);
+        });
     }
 
     public void onclickEmergencyCall(View view) {

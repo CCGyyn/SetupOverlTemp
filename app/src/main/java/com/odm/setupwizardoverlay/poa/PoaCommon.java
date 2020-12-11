@@ -88,6 +88,10 @@ public abstract class PoaCommon extends Activity {
         return getInternalHandler().sendEmptyMessage(what);
     }
 
+    public void sendEmptyMessageDelayed(int what, long delayMillis) {
+        getInternalHandler().sendEmptyMessageDelayed(what, delayMillis);
+    }
+
     public void post(Runnable r){
         getInternalHandler().post(r);
     }
