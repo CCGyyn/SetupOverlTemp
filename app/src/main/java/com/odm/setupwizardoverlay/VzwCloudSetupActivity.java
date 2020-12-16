@@ -698,6 +698,6 @@ public class VzwCloudSetupActivity extends Activity implements NavigationBar.Nav
 
 
     public void onClickEmergencyCall(View view) {
-        Utils.onclickEmergencyCall(getApplicationContext());
+        Utils.onclickEmergencyCall(this);
     }
 }

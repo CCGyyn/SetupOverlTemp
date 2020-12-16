@@ -1,0 +1,13 @@
+<service>
+    <serviceHeader>
+        <clientName>%s</clientName>
+        <serviceName>%s</serviceName>
+        <subserviceName>%s</subserviceName>
+        <requestID>%s</requestID>
+        <correlationID>%s</correlationID>
+    </serviceHeader>
+    <serviceBody>
+        <securityResponse>%s</securityResponse>
+        <securityQuestionID>%s</securityQuestionID>
+    </serviceBody>
+</service>

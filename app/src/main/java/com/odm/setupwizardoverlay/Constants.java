@@ -24,7 +24,9 @@ public class Constants {
 
     // pco values
     public static final int PCO_DATA_0 = 0;
+    public static final int PCO_DATA_2 = 2;
     public static final int PCO_DATA_3 = 3;
+    public static final int PCO_DATA_4 = 4;
     public static final int PCO_DATA_5 = 5;
     public static final int PCO_DATA_NONE = -1;
     public static final int PCO_DATA_TIME_OUT = -22;
@@ -41,6 +43,7 @@ public class Constants {
     public static final int ACTION_SHOW_NOT_ACTIVATED = 5;
     public static final int ACTION_SHOW_PLAN_SELECTION = 6;
     public static final int ACTION_NON_VZW_SIM = 7;
+    public static final int ACTION_PCO_2_UI = 8;
 
     public static final int MSG_ACTION_NON_VZW_SIM_CHECK = 66;
 

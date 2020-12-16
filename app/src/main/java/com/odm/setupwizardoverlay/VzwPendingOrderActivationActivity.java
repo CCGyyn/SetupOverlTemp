@@ -572,6 +572,6 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
     }
 
     public void onclickEmergencyCall(View view) {
-        Utils.onclickEmergencyCall(getApplicationContext());
+        Utils.onclickEmergencyCall(this);
     }
 }

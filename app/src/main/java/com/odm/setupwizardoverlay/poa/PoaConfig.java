@@ -67,7 +67,7 @@ public abstract class PoaConfig {
 	}
 
 	public static void init(Context context) {
-		mContextRef = new SoftReference<>(context.getApplicationContext());
+		mContextRef = new SoftReference<>(context);
 		setDebugMode(false, true);
 		if (Utils.DEBUG) {
 			String testUrl = readPersistUrl();
@@ -171,15 +171,15 @@ public abstract class PoaConfig {
 		return sb.toString();
 	}
 
-	public static PoaConfig getPoaConfig() {
+	public static PoaConfig getPoaConfig(Context context) {
 		if (DEBUGGABLE) {
 			if (sPreTestPoaConfig == null) {
-				sPreTestPoaConfig = new PreTestPoaConfig();
+				sPreTestPoaConfig = new PreTestPoaConfig(context);
 			}
 			return sPreTestPoaConfig;
 		} else {
 			if (sProductionPoaConfig == null) {
-				sProductionPoaConfig = new ProductionPoaConfig();
+				sProductionPoaConfig = new ProductionPoaConfig(context);
 			}
 			return sProductionPoaConfig;
 		}
@@ -191,6 +191,10 @@ public abstract class PoaConfig {
 
 
 	static class ProductionPoaConfig extends PoaConfig {
+
+		public ProductionPoaConfig(Context context) {
+			init(context);
+		}
 
 		@Override
 		public String getUsername() {
@@ -225,7 +229,8 @@ public abstract class PoaConfig {
 		public static final String RELEASE_ORDER = "ReleaseOrder";
 		String modifiedUrl = null;
 
-		PreTestPoaConfig() {
+		PreTestPoaConfig(Context context) {
+			init(context);
 			tryGetModifiedUrl();
 		}
 

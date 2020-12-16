@@ -92,7 +92,7 @@ public class ShowWifiWarnActivity extends Activity {
     }
 
     public void onclickEmergencyCall(View view) {
-        Utils.onclickEmergencyCall(getApplicationContext());
+        Utils.onclickEmergencyCall(this);
     }
 
 }

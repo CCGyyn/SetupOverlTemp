@@ -49,7 +49,7 @@ public class ValidateCustomerRequest
 		String serviceName = "EASSelfActivation";
 		String subserviceName = "ValidateCustomer";
 		String param = String.format(format, new Object[]{clientName, serviceName, subserviceName, requestID, correlationID, passcode, securityQuestionID});
-		String url = PoaConfig.getPoaConfig().getValidateCustomerUrl();
+		String url = PoaConfig.getPoaConfig(context).getValidateCustomerUrl();
 
 		HttpsURLConnection conn = null;
 		try {

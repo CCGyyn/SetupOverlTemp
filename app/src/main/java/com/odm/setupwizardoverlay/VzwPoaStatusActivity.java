@@ -62,8 +62,7 @@ public class VzwPoaStatusActivity extends PoaCommon {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
-        mPoaStatus = intent.getIntExtra(POA_STATUS_KEY, -1);
+
     }
 
     @Override
@@ -78,6 +77,7 @@ public class VzwPoaStatusActivity extends PoaCommon {
 
     @Override
     protected void initView() {
+        mPoaStatus = getIntent().getIntExtra(POA_STATUS_KEY, -1);
         mTitle = (TextView) findViewById(R.id.poa_title);
         mTvNotice = (TextView) findViewById(R.id.tv_notice);
         mTvNotice.setMovementMethod(ScrollingMovementMethod.getInstance());
@@ -233,7 +233,7 @@ public class VzwPoaStatusActivity extends PoaCommon {
     }
 
     public void onclickEmergencyCall(View view) {
-        Utils.onclickEmergencyCall(getApplicationContext());
+        Utils.onclickEmergencyCall(this);
     }
 
     private void powerOff(Context context) {

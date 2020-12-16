@@ -116,7 +116,7 @@ public class LookUpOrderRequest
 		String subserviceName = "LookupOrder";
 		String requestID = "abcd1234";
 		String param = String.format(format, new Object[]{clientName, serviceName, subserviceName, requestID, imsi, imei});
-		String url = PoaConfig.getPoaConfig().getLookupOrderUrl();
+		String url = PoaConfig.getPoaConfig(context).getLookupOrderUrl();
 
 		HttpsURLConnection conn = null;
 		try {

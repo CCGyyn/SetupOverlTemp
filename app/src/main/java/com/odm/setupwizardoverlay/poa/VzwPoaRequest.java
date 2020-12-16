@@ -179,7 +179,7 @@ public class VzwPoaRequest {
 	 */
 	public HttpsURLConnection doHttpPost(Context context, String param, String urlString, int timeout) throws SocketTimeoutException, UnknownHostException {
 		// config for current version
-		PoaConfig config = PoaConfig.getPoaConfig();
+		PoaConfig config = PoaConfig.getPoaConfig(context);
 		String user = config.getUsername();
 		String passwd = config.getPasswd();
 		if (DEBUG) {

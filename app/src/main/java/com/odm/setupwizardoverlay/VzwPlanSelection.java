@@ -213,7 +213,7 @@ public class VzwPlanSelection extends Activity {
     }
 
     public void onclickEmergencyCall(View view) {
-        Utils.onclickEmergencyCall(getApplicationContext());
+        Utils.onclickEmergencyCall(this);
     }
 
     @JavascriptInterface

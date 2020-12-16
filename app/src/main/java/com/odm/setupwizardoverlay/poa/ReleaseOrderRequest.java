@@ -49,7 +49,7 @@ public class ReleaseOrderRequest
 		String subserviceName = "ReleaseOrder";
 		//String requestID = "abcd1234";
 		String param = String.format(xml, new Object[]{clientName, serviceName, subserviceName, requestID, correlationID, imei});
-		String url = PoaConfig.getPoaConfig().getReleaseOrderUrl();
+		String url = PoaConfig.getPoaConfig(context).getReleaseOrderUrl();
 
 		HttpsURLConnection conn = null;
 		try {

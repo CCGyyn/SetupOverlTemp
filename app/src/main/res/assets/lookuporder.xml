@@ -1,0 +1,12 @@
+<service>
+    <serviceHeader>
+        <clientName>%s</clientName>
+        <serviceName>%s</serviceName>
+        <subserviceName>%s</subserviceName>
+        <requestID>%s</requestID>
+    </serviceHeader>
+    <serviceBody>
+        <imsi>%s</imsi>
+        <imei>%s</imei>
+    </serviceBody>
+</service>

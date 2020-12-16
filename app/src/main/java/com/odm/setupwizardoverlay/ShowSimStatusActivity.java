@@ -361,7 +361,7 @@ public class ShowSimStatusActivity extends Activity implements NavigationBar.Nav
     }
 
     public void onclickEmergencyCall(View view) {
-        Utils.onclickEmergencyCall(getApplicationContext());
+        Utils.onclickEmergencyCall(this);
     }
 
     private static final int DELAY_TIMER_MILLIS = 6000;

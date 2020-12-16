@@ -413,6 +413,6 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon implements 
     }
 
     public void onclickEmergencyCall(View view) {
-        Utils.onclickEmergencyCall(getApplicationContext());
+        Utils.onclickEmergencyCall(this);
     }
 }

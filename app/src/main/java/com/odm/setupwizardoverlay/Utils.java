@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.telephony.SubscriptionInfo;
@@ -300,6 +301,7 @@ public class Utils {
 
     public static void onclickEmergencyCall(Context context) {
         Intent intent = new Intent("com.android.phone.EmergencyDialer.DIAL");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
         context.startActivity(intent);
     }
 

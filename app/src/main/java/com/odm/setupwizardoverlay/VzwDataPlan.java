@@ -15,7 +15,7 @@ public class VzwDataPlan extends Activity {
     }
 
     public void onclickEmergencyCall(View paramView) {
-        Utils.onclickEmergencyCall(getApplicationContext(), Intent.FLAG_ACTIVITY_NEW_TASK);
+        Utils.onclickEmergencyCall(this, Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
     public void onclickReturn(View view) {
