@@ -18,7 +18,8 @@ public class SetupWizardApplication extends Application {
         String packageName = getPackageName();
         Log.d(TAG, "onCreate " + packageName);
 
-        if (getCurProcessName().equals(packageName)) {
+        String curProcessName = getCurProcessName();
+        if (curProcessName.equals(packageName)) {
             Log.d(TAG, "start pco data observer");
 
             //START_PCO_DATA_LISTEN_SERVICE
@@ -30,6 +31,8 @@ public class SetupWizardApplication extends Application {
 			PcoDataObserver.startListen(this);
             preInitWifi();
 
+        } else if (curProcessName.equals("com.android.phone")) {
+            PcoDataObserver.startListen(this);
         }
     }
 

@@ -41,6 +41,7 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
 
     private ProgressBar mProgressIndicator;
     private Button mBtnActivateNow;
+    private TextView mTvTitle;
     private TextView mTvNotice;
     private String mCorrelationID;
     private String mRequestID;
@@ -72,18 +73,21 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
 
     @Override
     protected void initView() {
-        //ccg VZ_REQ_ACTIVATIONUI_38554  VZ_REQ_ACTIVATIONUI_39805 may be
-        parseArgs();
-        if (DEBUG) {
-            Log.e(TAG, "onActivityCreated mOrderType=" + mOrderType + " ,mRequestID=" + mRequestID + " ,mCorrelationID=" + mCorrelationID);
-        }
-
+        //ccg VZ_REQ_ACTIVATIONUI_38554 VZ_REQ_ACTIVATIONUI_39817 VZ_REQ_ACTIVATIONUI_39805 may be
+        mTvTitle = (TextView) findViewById(R.id.poa_title);
         mTvNotice = (TextView) findViewById(R.id.tv_notice_text);
         mProgressIndicator = (ProgressBar) findViewById(R.id.act_progress_indicator);
         mBtnActivateNow = (Button) findViewById(R.id.activate_now_button);
         mEmergencyBtn = (Button) findViewById(R.id.emergency_button_btn);
 
-        mTvNotice.setText(R.string.activation_last_minutes);  //// for default
+        //VZ_REQ_ACTIVATIONUI_39805
+        mTvNotice.setText(R.string.activation_last_minutes);
+        parseArgs();
+        if (DEBUG) {
+            Log.e(TAG, "onActivityCreated mOrderType=" + mOrderType + " ,mRequestID=" + mRequestID + " ,mCorrelationID=" + mCorrelationID);
+        }
+
+         //// for default
         initActivationButtons();
 
         mScrollView = (ScrollViewExt) findViewById(R.id.po_sv_container);
@@ -105,6 +109,8 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
                 Log.d(TAG, "onClickActivateNow");
             }
             onClickActivateNow();
+            mBtnActivateNow.setEnabled(false);
+            mBtnActivateNow.setTextColor(getResources().getColor(R.color.on_press_color));
         });
         mScrollView.setScrollViewListener(new ScrollViewExt.IScrollViewChangedListener() {
             @Override
@@ -133,7 +139,7 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
                     break;
             }
         }
-        return false;
+        return super.dispatchKeyEvent(event);
     }
 
     private void initActivationButtons() {
@@ -151,10 +157,12 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
 
     private void onClickActivateNow() {
         if (mOrderType == LookUpOrderRequest.MSG_PO_NEW_ORDER) { //// Get Phone Number
-            setTitle(getString(R.string.getting_phone_number));
+            //setTitle(R.string.getting_phone_number);
+            mTvTitle.setText(R.string.getting_phone_number);
             mTvNotice.setText(R.string.wait_for_get_number);
         } else {  //// update ,  deactivation old phone Number
-            setTitle(getString(R.string.deactivate_old_phone));
+            //setTitle(R.string.deactivate_old_phone);
+            mTvTitle.setText(R.string.deactivate_old_phone);
             mTvNotice.setText(R.string.turn_off_for_deactivate);
         }
 //ccg
@@ -294,10 +302,10 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
         Log.e(TAG, "mOrderType = " + mOrderType);
         switch (mOrderType) {
             case LookUpOrderRequest.MSG_PO_NEW_ORDER:   /// for new order
-                mTvNotice.setText(getString(R.string.activation_last_minutes));
+                mTvNotice.setText(R.string.activation_last_minutes);
                 break;
             case LookUpOrderRequest.MSG_PO_UPGRADE_ORDER:  /// for update order
-                mTvNotice.setText(getString(R.string.prepare_activate_your_phone));
+                mTvNotice.setText(R.string.prepare_activate_your_phone);
                 break;
         }
     }
@@ -383,7 +391,8 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
         }
 
         if (whatCase == -1) {
-            if (request.getResponseStatus() == ReleaseOrderRequest.MSG_RELEASEORDER_REQUEST_FAILURE_UNKNOWN_HOST) {
+            if (request.getResponseStatus() == ReleaseOrderRequest.MSG_RELEASEORDER_REQUEST_FAILURE_UNKNOWN_HOST
+                    || request.getResponseStatus() == ReleaseOrderRequest.MSG_RELEASEORDER_REQUEST_FAILURE) {
                 // just for unknown host
                 whatCase = VzwPoaStatusActivity.ReleaseOrderTimeout;
             }
@@ -422,10 +431,14 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
         mProgressIndicator.setVisibility(View.GONE);
 
         if (mOrderType == LookUpOrderRequest.MSG_PO_NEW_ORDER) {  ////Preparing to Activate Your Phone
-            setTitle(getString(R.string.po_prepare_to_activate));
+            // VZ_REQ_ACTIVATIONUI_39809-013 NewActReleaseOrderCoorrelIDIncorrect VZ_TC_LTEPOA_10322
+            //setTitle(R.string.po_prepare_to_activate);
+            mTvTitle.setText(R.string.po_prepare_to_activate);
             mTvNotice.setText(R.string.po_setup_email_cloud);
         } else {  /// transfer number
-            setTitle(getString(R.string.transferring_phone_umber));
+            //setTitle(R.string.transferring_phone_umber);
+            //VZ_REQ_ACTIVATIONUI_39817
+            mTvTitle.setText(R.string.transferring_phone_umber);
             mTvNotice.setText(R.string.transferring_from_existing_number);
         }
 

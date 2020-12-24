@@ -23,6 +23,7 @@
             android:layout_weight="1.0"
             android:textColor="@color/material_blue_700"
             style="@android:style/Widget.Material.Light.Button.Borderless"
+            android:textSize="16.0sp"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 </LinearLayout>

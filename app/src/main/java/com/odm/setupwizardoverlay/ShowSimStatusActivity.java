@@ -108,7 +108,6 @@ public class ShowSimStatusActivity extends Activity implements NavigationBar.Nav
     @Override
     protected void onResume() {
         super.onResume();
-
         //disableNextIfSimLocked();
     }
 

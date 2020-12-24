@@ -117,8 +117,8 @@ public class VzwSimCheckActivity extends Activity {
 
         mReqRetry = 0;
 
-        Intent intentService = new Intent(mContext, VzwActivationService.class);
-        startService(intentService);
+        /*Intent intentService = new Intent(mContext, VzwActivationService.class);
+        startService(intentService);*/
         // register sim lock callback to get unlockStatus
         registerSimLockCallback(getApplicationContext());
 
@@ -838,13 +838,22 @@ public class VzwSimCheckActivity extends Activity {
 
     void handlePendingOrderNotFound(LookUpOrderRequest request) {
         String errorCode = request.getErrorCode();
+        String errorMessage = request.getErrorMessage();
         if (DEBUG) {
             //Toast.makeText(getActivity(), "no order found errorCode=" + errorCode, Toast.LENGTH_SHORT).show();
             Log.d(TAG, "handlePendingOrderNotFound: mLookupReq.getErrorCode=" + errorCode + " ,getOrderType=" + request.getOrderType());
         }
         //start to VzwPoaStatusActivity
         Intent intent = WizardManagerHelper.getNextIntent(getIntent(), 201);
-        intent.putExtra(VzwPoaStatusActivity.POA_STATUS_KEY, VzwPoaStatusActivity.NewActOrderNotFound);
+        int whatCase;
+        if (VzwPoaRequest.matchSecurityFailure(errorCode, errorMessage)) {
+            Log.e(TAG, "security error occurred");
+            // show security error
+            whatCase = VzwPoaStatusActivity.Lost_and_Stolen_Device_or_SIM;
+        } else {
+            whatCase = VzwPoaStatusActivity.NewActOrderNotFound;
+        }
+        intent.putExtra(VzwPoaStatusActivity.POA_STATUS_KEY, whatCase);
         intent.putExtra(VzwPoaStatusActivity.POA_ORDER_TYPE_KEY, request.getOrderType());
         startActivityPanel(intent);
     }
