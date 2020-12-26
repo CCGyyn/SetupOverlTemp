@@ -5,15 +5,7 @@
     android:layout_gravity="center_horizontal"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/poa_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="@string/ready_to_activate"
-        android:textColor="@android:color/black"
-        android:layout_gravity="center_horizontal"
-        android:textSize="25sp" />
+    <include layout="@layout/header_layout" />
 
     <com.odm.setupwizardoverlay.view.ScrollViewExt
         android:id="@+id/po_sv_container"

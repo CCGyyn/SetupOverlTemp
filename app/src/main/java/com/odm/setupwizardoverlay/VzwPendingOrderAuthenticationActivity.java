@@ -42,6 +42,7 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon implements 
     private String mCorrelationID;
     private String mRequestID;
     private int mSecurityQID;
+    private TextView mTitle;
     private TextView mTvBillingPassword;
     private TextView mTvSsn;
     private EditText mEtPassword;
@@ -100,6 +101,8 @@ public class VzwPendingOrderAuthenticationActivity extends PoaCommon implements 
         mBtnVerify = (Button) findViewById(R.id.btn_verify);*/
         mEmergencyBtn = (Button) findViewById(R.id.emergency_button_btn);
         mRightBtn = (Button) findViewById(R.id.right_btn);
+        /*mTitle = (TextView) findViewById(R.id.page_header);
+        mTitle.setText(R.string.po_authentication_title);*/
         mRightBtn.setText(R.string.label_next);
     }
 

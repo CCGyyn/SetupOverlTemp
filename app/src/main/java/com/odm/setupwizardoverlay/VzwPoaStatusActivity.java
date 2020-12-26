@@ -78,7 +78,7 @@ public class VzwPoaStatusActivity extends PoaCommon {
     protected void initView() {
         mPoaStatus = getIntent().getIntExtra(POA_STATUS_KEY, -1);
         Log.d(TAG, "mPoaStatus=" + mPoaStatus);
-        mTitle = (TextView) findViewById(R.id.poa_title);
+        mTitle = (TextView) findViewById(R.id.page_header);
         mTvNotice = (TextView) findViewById(R.id.tv_notice);
         mTvNotice.setMovementMethod(ScrollingMovementMethod.getInstance());
         mEmergencyBtn = (Button) findViewById(R.id.emergency_button_btn);

@@ -9,4 +9,7 @@
     android:textAlignment="viewStart"
     android:defaultFocusHighlightEnabled="false"
     android:textAppearance="?android:textAppearanceMedium"
-    android:textSize="24sp" />
+    android:layout_marginLeft="24.0dip"
+    android:layout_marginRight="24.0dip"
+    android:layout_marginTop="14.0dip"
+    android:textSize="18sp" />

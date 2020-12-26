@@ -74,12 +74,13 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
     @Override
     protected void initView() {
         //ccg VZ_REQ_ACTIVATIONUI_38554 VZ_REQ_ACTIVATIONUI_39817 VZ_REQ_ACTIVATIONUI_39805 may be
-        mTvTitle = (TextView) findViewById(R.id.poa_title);
+        mTvTitle = (TextView) findViewById(R.id.page_header);
         mTvNotice = (TextView) findViewById(R.id.tv_notice_text);
         mProgressIndicator = (ProgressBar) findViewById(R.id.act_progress_indicator);
         mBtnActivateNow = (Button) findViewById(R.id.activate_now_button);
         mEmergencyBtn = (Button) findViewById(R.id.emergency_button_btn);
 
+        mTvTitle.setText(R.string.ready_to_activate);
         //VZ_REQ_ACTIVATIONUI_39805
         mTvNotice.setText(R.string.activation_last_minutes);
         parseArgs();

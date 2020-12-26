@@ -12,6 +12,7 @@
         android:textColor="@android:color/black"
         android:layout_gravity="center_horizontal"
         android:textSize="25sp" />
+    <!--<include layout="@layout/header_layout" />-->
 
     <com.odm.setupwizardoverlay.view.ScrollViewExt
         android:layout_centerInParent="true"
