@@ -324,5 +324,6 @@ To set up your phone using Wi-Fi only, tap Doni't Activate."</string>
                     2. Transfer your old phone number to this phone.\n
                     3. Activate this phone.\n</string>
     <string name="turn_off_phone">Turn off phone</string>
+    <string name="no_network_connection_msg">A network connection is required to continue with setup. If you do not connect to a Wi-Fi network, you will not be able to sign in to a Google account to turn on device protection.</string>
 </resources>
 

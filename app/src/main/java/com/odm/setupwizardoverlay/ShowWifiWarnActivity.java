@@ -1,7 +1,9 @@
 package com.odm.setupwizardoverlay;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -54,7 +56,7 @@ public class ShowWifiWarnActivity extends Activity {
 
     private void initAction() {
         useMobileBtn.setOnClickListener(v -> launchNextPage(101));
-        skipBtn.setOnClickListener(v -> launchNextPage(1));
+        skipBtn.setOnClickListener(v -> showNoNetworkDialog());
         backToWifiBtn.setOnClickListener(v -> onBackPressed());
     }
 
@@ -89,6 +91,27 @@ public class ShowWifiWarnActivity extends Activity {
         // Note that pulling the SIM card returns UNKNOWN, not ABSENT.
         return simState != TelephonyManager.SIM_STATE_ABSENT
                 && simState != TelephonyManager.SIM_STATE_UNKNOWN;
+    }
+
+    /**
+     * add for VZ_REQ_SETWIZ_40082
+     */
+    private void showNoNetworkDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.no_network_title)
+                .setMessage(R.string.no_network_connection_msg)
+                .setPositiveButton(R.string.wi_fi, (dialog, which) -> {
+                    onBackPressed();
+                    dialog.dismiss();
+                })
+                .setNegativeButton(R.string.skip_anyway, (dialog, which) -> {
+                    launchNextPage(1);
+                    dialog.dismiss();
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getColor(R.color.material_blue_700));
+        alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getColor(R.color.material_blue_700));
     }
 
     public void onclickEmergencyCall(View view) {
