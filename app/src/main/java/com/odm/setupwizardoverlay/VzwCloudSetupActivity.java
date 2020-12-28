@@ -11,6 +11,8 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
@@ -136,6 +138,14 @@ public class VzwCloudSetupActivity extends Activity implements NavigationBar.Nav
             return true;
         }
 
+        ConnectivityManager connectivityManager = (ConnectivityManager) mContext
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isAvailable()) {
+            Log.d(TAG, "no network, skip!");
+            return true;
+        }
+
         // get activation status from secure setting
         if (Utils.isPhoneActivatedSuccess(this)) {
             Log.d(TAG, "read secure setting. phone activated, no skip!");
@@ -144,7 +154,7 @@ public class VzwCloudSetupActivity extends Activity implements NavigationBar.Nav
 
         // try to get current mdn
         String curMdn = Utils.getMDN(mContext);
-        //if(Utils.DEBUG) Log.d(TAG, "try to get current mdn " + curMdn);
+        if(Utils.DEBUG) Log.d(TAG, "try to get current mdn " + curMdn);
         if (Utils.isValidMdn(curMdn)) {
             Log.d(TAG, "curMdn is valid. no skip!");
             return false;
