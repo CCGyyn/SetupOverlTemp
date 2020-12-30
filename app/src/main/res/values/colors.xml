@@ -49,4 +49,6 @@
 
     <color name="setup_wizard_wifi_color_light">#89000000</color>
     <color name="material_blue_700">#3367D6</color>
+    <color name="color_text_gray">#ffb5b5b5</color>
+    <color name="color_button_gray">#ffe8e8e8</color>
 </resources>

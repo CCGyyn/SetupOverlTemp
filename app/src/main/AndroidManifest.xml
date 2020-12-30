@@ -24,6 +24,9 @@
     <uses-permission android:name="com.verizon.mips.services.FILE_ACCESS" />
     <uses-permission android:name="com.qualcomm.qti.permission.REMOTE_SIMLOCK" />
     <uses-permission android:name="com.qualcomm.qti.permission.REMOTE_SIMLOCK_AUTH" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS"/>
 
     <application
         android:name=".SetupWizardApplication"
@@ -200,6 +203,24 @@
             <intent-filter>
                 <action android:name="com.odm.setupwizardoverlay.poa.VzwPendingOrderActivation" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".VzwDigitalSecureActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.odm.setupwizardoverlay.DigitalSecure" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".WebViewScreenActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true">
+            <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

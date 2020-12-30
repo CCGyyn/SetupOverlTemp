@@ -325,5 +325,13 @@ To set up your phone using Wi-Fi only, tap Doni't Activate."</string>
                     3. Activate this phone.\n</string>
     <string name="turn_off_phone">Turn off phone</string>
     <string name="no_network_connection_msg">A network connection is required to continue with setup. If you do not connect to a Wi-Fi network, you will not be able to sign in to a Google account to turn on device protection.</string>
+
+    <string name="verizon_vzsecurity_name">Digital Secure</string>
+    <string name="verizon_vzsecurity_accept">ACCEPT</string>
+    <string name="verizon_vzsecurity_context">Digital Secure gives you free Wi-Fi security, system checks; and scans for viruses, malware and app privacy threats. Data usage applies.</string>
+    <string name="verizon_vzsecurity_permission">For more details on why these permissions are needed, open the Security &amp; Privacy app after setup is complete.</string>
+    <string name="verizon_vzsecurity_privacy">Allow Digital Secure to access your mobile number to confirm eligibility and your photos, media and other storage on your device to scan for viruses and other malware. You can manage these permissions any time from your device Settings.</string>
+    <string name="verizon_vzsecurity_terms">"By tapping &lt;b>Accept&lt;/b>, you are allowing Digital Secure to access the permissions described above, and are agreeing to the Digital Secure &lt;a href=%1$s>Terms &amp; Conditions&lt;/a> and Verizon's &lt;a href=%2$s>Privacy Policy&lt;/a>."</string>
+    <string name="setup_strings_skip">Skip</string>
 </resources>
 

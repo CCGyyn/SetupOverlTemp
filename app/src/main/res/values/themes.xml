@@ -40,4 +40,72 @@
         <item name="android:colorForeground">@color/suw_switch_track_off_color</item>
     </style>
 
+    <style name="Suw_Base">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="Suw_Image">
+        <item name="android:layout_width">32.0dip</item>
+        <item name="android:layout_height">32.0dip</item>
+        <item name="android:layout_marginTop">24.0dip</item>
+    </style>
+
+    <style name="Suw_Title" parent="@style/Suw_Base">
+        <item name="android:textSize">24.0sp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="Suw_Second_Title" parent="@style/Suw_Title">
+        <item name="android:textSize">20.0sp</item>
+    </style>
+    <style name="Suw_Content" parent="@style/Suw_Title">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:layout_width">fill_parent</item>
+    </style>
+    <style name="Suw_Button_Base" parent="@style/Suw_Button_Base_Font">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">16.0dip</item>
+        <item name="android:paddingTop">10.0dip</item>
+        <item name="android:paddingRight">16.0dip</item>
+        <item name="android:paddingBottom">10.0dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="Suw_Button_Base_Font">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    <style name="Suw_Button_Blue" parent="@style/Suw_Button_Base">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:backgroundTint">@color/material_blue_700</item>
+    </style>
+    <style name="Suw_Button_Gray" parent="@style/Suw_Button_Base">
+        <item name="android:textColor">@color/color_text_gray</item>
+        <item name="android:backgroundTint">@color/color_button_gray</item>
+    </style>
+    <style name="Suw_Button_white" parent="@style/Suw_Button_Base">
+        <item name="android:textColor">@color/material_blue_700</item>
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:minHeight">36.0dip</item>
+    </style>
+    <style name="Theme.SwitchTheme" parent="@android:style/Theme.DeviceDefault.Settings">
+        <item name="android:colorAccent">@color/material_blue_700</item>
+    </style>
+    <style name="Web_White_ButtonStyle" parent="@style/Web_White_ButtonStyle_Base">
+        <item name="android:textColor">@color/material_blue_700</item>
+        <item name="android:backgroundTint">@color/link_color</item>
+    </style>
+    <style name="Web_White_ButtonStyle_Base" parent="@android:style/Widget.DeviceDefault.Light.Button.Borderless.Small">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:paddingLeft">16.0dip</item>
+        <item name="android:paddingTop">10.0dip</item>
+        <item name="android:paddingRight">16.0dip</item>
+        <item name="android:paddingBottom">10.0dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+
 </resources>
