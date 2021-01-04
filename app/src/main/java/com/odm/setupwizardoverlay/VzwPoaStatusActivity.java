@@ -51,6 +51,7 @@ public class VzwPoaStatusActivity extends PoaCommon {
     public static final int UpgradeReleaseOrderSuccessThruNotification = 23;
     public static final int UpgradeReleaseOrderSuccessThruWebPortal = 24;
     public static final int UpgradeReleaseSuccess5CharAccountPIN = 25;
+    public static final int ACTION_SHOW_ACTIVATION_FAILURE = 26;
 
     private TextView mTitle;
     private TextView mTvNotice;
@@ -194,6 +195,10 @@ public class VzwPoaStatusActivity extends PoaCommon {
 
                     sendActivationSuccessBroadcast(mdn);
                 }
+                break;
+            case ACTION_SHOW_ACTIVATION_FAILURE:
+                mTvNotice.setText(R.string.activation_failure);
+                initWifiButton(mRightBtn);
                 break;
         }
     }

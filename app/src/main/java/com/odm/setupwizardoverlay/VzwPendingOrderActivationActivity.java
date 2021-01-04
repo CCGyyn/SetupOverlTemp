@@ -34,6 +34,7 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
     private static final int MSG_RETRY_RELEASE_ORDER_REQ = 11;
     public static final int MSG_ACTIVATION_SUCCESS = 12;
     public static final int MSG_AUTO_ACTIVATION = 13;
+    public static final int MSG_GET_MDN_TIMEOUT = 14;
 
     public static final int GET_MDN_DELAY_MILLIS = 3500;
     public static final int ACTIVATION_SUCCESS_DISPLAY_DELAY_MILLIS = 5000;
@@ -283,6 +284,10 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
                 }
                 onClickActivateNow();
                 break;
+            case MSG_GET_MDN_TIMEOUT:
+                removeMessages(MSG_GET_MDN_TIMEOUT);
+                showPoaStatus(VzwPoaStatusActivity.ACTION_SHOW_ACTIVATION_FAILURE);
+                break;
         }
 
         return consumed;
@@ -350,6 +355,7 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
             }
             IntentFilter filter = new IntentFilter(ACTION_PCO_CHANGE);
             registerReceiver(mPcoReceiver, filter);
+            sendEmptyMessageDelayed(MSG_GET_MDN_TIMEOUT, 5 * 60 * 1000);
             if (DEBUG) {
                 Log.e(TAG, "register for pco activation");
             }
@@ -576,6 +582,7 @@ public class VzwPendingOrderActivationActivity extends PoaCommon {
             Log.e(TAG, "MSG_GET_MDN mdn=" + mdn);
         }
         if (Utils.isValidMbn(mdn)) {
+            removeMessages(MSG_GET_MDN_TIMEOUT);
             Message msg = getInternalHandler().obtainMessage();
             msg.what = MSG_ACTIVATION_SUCCESS;
             msg.obj = mdn;
