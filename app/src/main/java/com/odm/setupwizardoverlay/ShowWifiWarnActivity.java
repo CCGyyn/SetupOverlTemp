@@ -103,11 +103,15 @@ public class ShowWifiWarnActivity extends Activity {
                 .setPositiveButton(R.string.wi_fi, (dialog, which) -> {
                     onBackPressed();
                     dialog.dismiss();
-                })
-                .setNegativeButton(R.string.skip_anyway, (dialog, which) -> {
+                });
+        int frpMode = Settings.Secure.getInt(getContentResolver(),
+                            Settings.Secure.SECURE_FRP_MODE, 0);
+        if (frpMode == 0) {
+                builder.setNegativeButton(R.string.skip_anyway, (dialog, which) -> {
                     launchNextPage(1);
                     dialog.dismiss();
                 });
+        }
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
         alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getColor(R.color.material_blue_700));
