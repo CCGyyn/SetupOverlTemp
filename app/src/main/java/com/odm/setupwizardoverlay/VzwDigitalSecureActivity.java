@@ -1,6 +1,5 @@
 package com.odm.setupwizardoverlay;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -8,10 +7,10 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
@@ -74,6 +73,8 @@ public class VzwDigitalSecureActivity extends Activity implements CompoundButton
 
     private Switch mVZSwitch;
 
+    private TextView termsAndConditions;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +116,7 @@ public class VzwDigitalSecureActivity extends Activity implements CompoundButton
         mVZSwitch = (Switch)findViewById(R.id.vzsecurity_switch_compat);
         mVZSwitch.setChecked(true);
         mVZSecurityText = (TextView)findViewById(R.id.vzsecurity_terms);
+        termsAndConditions = (TextView) findViewById(R.id.terms_and_conditions);
         setVZLinkTextContent();
         mVZSkipButton = (Button)findViewById(R.id.vzsecurity_skip);
         mVZAcceptButton = (Button)findViewById(R.id.vzsecurity_accept);
@@ -141,6 +143,13 @@ public class VzwDigitalSecureActivity extends Activity implements CompoundButton
             this.mVZAcceptButton.setClickable(false);
         });
         mVZSwitch.setOnCheckedChangeListener(this);
+        termsAndConditions.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName("com.odm.setupwizardoverlay", "com.odm.setupwizardoverlay.WebViewScreenActivity"));
+            intent.putExtra("URL", "https://www.verizonwireless.com/support/digital-secure-legal/");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+            this.mContext.startActivity(intent);
+        });
     }
 
     private void launchNextPage(int resultCode) {
@@ -227,6 +236,8 @@ public class VzwDigitalSecureActivity extends Activity implements CompoundButton
         this.mVZSecurityText.setText(spannableStringBuilder);
         this.mVZSecurityText.setMovementMethod(LinkMovementMethod.getInstance());
         this.mVZSecurityText.setHighlightColor(0);
+
+        termsAndConditions.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
     }
 
     private void bindService() {

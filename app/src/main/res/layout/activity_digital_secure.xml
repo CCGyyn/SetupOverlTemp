@@ -12,7 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="0.0dip"
-            android:src="@drawable/ic_security_privacy"
+            android:src="@drawable/digital_secure"
             style="@style/Suw_Image" />
         <TextView
             android:gravity="center_vertical"
@@ -25,19 +25,21 @@
             style="@style/Suw_Title" />
         <TextView
             android:id="@+id/vzsecurity_title"
-            android:layout_marginTop="4.0dip"
             android:text="@string/verizon_vzsecurity_name"
             android:layout_below="@+id/vzverizon_icon"
             android:layout_centerVertical="true"
+            android:layout_marginVertical="15dp"
+            android:layout_marginLeft="10dp"
             style="@style/Suw_Second_Title" />
         <TextView
-            android:textSize="14.0sp"
+            android:textSize="15.0sp"
             android:id="@+id/vzsecurity_context"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15.0dip"
             android:text="@string/verizon_vzsecurity_context"
             android:layout_below="@+id/vzsecurity_title"
+            android:layout_margin="15dp"
             style="@style/Suw_Content" />
         <RelativeLayout
             android:id="@+id/vzsecurity_privacy_switch"
@@ -52,17 +54,17 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true" />
             <TextView
-                android:textSize="14.0sp"
+                android:textSize="15.0sp"
                 android:id="@+id/vzsecurity_privacy_context"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20.0dip"
+                android:layout_marginLeft="22.0dip"
                 android:text="@string/verizon_vzsecurity_privacy"
                 android:layout_toLeftOf="@+id/vzsecurity_switch_compat"
                 style="@style/Suw_Content" />
         </RelativeLayout>
         <TextView
-            android:textSize="14.0sp"
+            android:textSize="15.0sp"
             android:id="@+id/vzsecurity_permission"
             android:visibility="gone"
             android:layout_marginTop="15.0dip"
@@ -70,37 +72,56 @@
             android:layout_below="@+id/vzsecurity_privacy_switch"
             style="@style/Suw_Content" />
         <TextView
-            android:textSize="14.0sp"
+            android:textSize="15.0sp"
             android:id="@+id/vzsecurity_terms"
-            android:layout_marginTop="15.0dip"
+            android:layout_marginTop="50.0dp"
+            android:layout_marginHorizontal="15dp"
             android:text="@string/verizon_vzsecurity_terms"
             android:layout_below="@+id/vzsecurity_permission"
             style="@style/Suw_Content" />
     </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/button_layout"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_alignParentBottom="true">
-        <Button
-            android:id="@+id/vzsecurity_skip"
-            android:text="@string/setup_strings_skip"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:textAllCaps="true"
-            style="@style/Suw_Button_white" />
-        <Button
-            android:id="@+id/vzsecurity_accept"
-            android:text="@string/verizon_vzsecurity_accept"
-            android:layout_alignParentRight="true"
-            android:textAllCaps="true"
-            style="@style/Suw_Button_Blue" />
-        <Button
-            android:id="@+id/vzsecurity_accept_gray"
-            android:visibility="gone"
-            android:text="@string/verizon_vzsecurity_accept"
-            android:layout_alignParentRight="true"
-            android:textAllCaps="true"
-            style="@style/Suw_Button_Gray" />
-    </RelativeLayout>
+        <TextView
+            android:textSize="20.0sp"
+            android:id="@+id/terms_and_conditions"
+            android:text="@string/terms_and_conditions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:clickable="true"
+            android:textColor="@color/material_blue_700"
+            android:layout_marginBottom="15dp"
+            />
+        <RelativeLayout
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <Button
+                android:id="@+id/vzsecurity_skip"
+                android:text="@string/setup_strings_skip"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:textAllCaps="true"
+                style="@style/Suw_Button_white" />
+            <Button
+                android:id="@+id/vzsecurity_accept"
+                android:text="@string/verizon_vzsecurity_accept"
+                android:layout_alignParentRight="true"
+                android:textAllCaps="true"
+                style="@style/Suw_Button_Blue" />
+            <Button
+                android:id="@+id/vzsecurity_accept_gray"
+                android:visibility="gone"
+                android:text="@string/verizon_vzsecurity_accept"
+                android:layout_alignParentRight="true"
+                android:textAllCaps="true"
+                style="@style/Suw_Button_Gray" />
+        </RelativeLayout>
+    </LinearLayout>
+
 </RelativeLayout>
